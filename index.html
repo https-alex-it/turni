@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>Gestione Turni Dipendenti</title>
+    <title>Gestione Turni - Firebase Cloud</title>
     <style>
         * {
             box-sizing: border-box;
@@ -11,548 +11,728 @@
         }
 
         body {
-            background: linear-gradient(145deg, #e9f0f5 0%, #d9e2ec 100%);
+            background: linear-gradient(135deg, #e0eafc 0%, #cfdef3 100%);
             margin: 0;
             min-height: 100vh;
-            padding: 24px 16px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            padding: 20px 16px;
         }
 
-        /* container principale */
-        .app-container {
-            max-width: 1300px;
+        .app-wrapper {
+            max-width: 1400px;
             width: 100%;
-            background: rgba(255,255,255,0.65);
-            backdrop-filter: blur(2px);
-            border-radius: 3rem;
-            box-shadow: 0 20px 35px -12px rgba(0,0,0,0.2), inset 0 1px 1px rgba(255,255,255,0.6);
-            padding: 1.8rem 2rem 2.2rem;
+            margin: 0 auto;
+            background: rgba(255,255,255,0.75);
+            backdrop-filter: blur(3px);
+            border-radius: 2.5rem;
+            box-shadow: 0 25px 45px -12px rgba(0,0,0,0.25);
+            padding: 1.5rem 1.8rem 2rem;
             transition: all 0.2s;
         }
 
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid #ffffffaa;
+            padding-bottom: 0.8rem;
+        }
         h1 {
-            font-size: 1.9rem;
+            font-size: 1.8rem;
             font-weight: 700;
-            margin: 0 0 0.25rem 0;
-            color: #1e2f3e;
-            letter-spacing: -0.3px;
+            margin: 0;
+            background: linear-gradient(145deg, #1f4870, #13324b);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+        .user-panel {
+            background: white;
+            border-radius: 60px;
+            padding: 6px 18px 6px 24px;
             display: flex;
             align-items: center;
-            gap: 12px;
-            flex-wrap: wrap;
-            justify-content: space-between;
+            gap: 15px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
         }
-
-        h1 small {
-            font-size: 0.85rem;
-            font-weight: normal;
-            background: #2c3e2f20;
+        .user-info {
+            font-weight: 600;
+            color: #1e4a76;
+        }
+        .logout-btn, .switch-to-admin, .switch-to-user {
+            background: #eef2f8;
+            border: none;
             padding: 6px 14px;
             border-radius: 40px;
-            color: #2c5a2e;
-            backdrop-filter: blur(2px);
-        }
-
-        .sub {
-            color: #2c4c6c;
-            border-left: 4px solid #3b8c5a;
-            padding-left: 14px;
-            margin: 8px 0 28px 0;
             font-weight: 500;
-            font-size: 0.95rem;
-        }
-
-        /* layout griglia principale: tabella turni + pannello controllo */
-        .dashboard {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 2rem;
-        }
-
-        .turni-table-wrapper {
-            flex: 2.5;
-            min-width: 280px;
-            background: white;
-            border-radius: 2rem;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.05);
-            overflow-x: auto;
-            padding: 0.5rem 0;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 1rem;
-        }
-
-        th {
-            background: #f1f6fa;
-            padding: 16px 12px;
-            font-weight: 700;
-            color: #1f4a6e;
-            font-size: 1.1rem;
-            border-bottom: 2px solid #cbdbe2;
-        }
-
-        td {
-            padding: 14px 8px;
-            text-align: center;
-            border-bottom: 1px solid #e9edf2;
-            vertical-align: middle;
-            font-weight: 500;
-        }
-
-        .dipendente-nome {
-            font-weight: 700;
-            background-color: #fafcff;
-            text-align: left;
-            padding-left: 18px;
-            font-size: 1.05rem;
-            color: #1a3e50;
-            border-right: 1px solid #e2e8f0;
-        }
-
-        .turno-badge {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            background: #f0f3f8;
-            padding: 8px 16px;
-            border-radius: 60px;
-            font-weight: 600;
-            font-size: 0.9rem;
-            width: fit-content;
-            margin: 0 auto;
-            box-shadow: inset 0 1px 1px #fff, 0 1px 2px rgba(0,0,0,0.05);
-        }
-
-        .mattina {
-            background: #ffe8c7;
-            color: #b45f1b;
-            border-left: 5px solid #f7b05e;
-        }
-
-        .pomeriggio {
-            background: #d9effa;
-            color: #1d6f8f;
-            border-left: 5px solid #3eacd1;
-        }
-
-        .btn-turno {
-            background: none;
-            border: none;
-            font-size: 1.2rem;
             cursor: pointer;
-            margin: 0 6px;
-            transition: transform 0.1s ease;
-            background: #eef2f8;
-            padding: 6px 12px;
-            border-radius: 40px;
-            font-weight: 600;
-            color: #2c5f8a;
+            transition: 0.2s;
         }
-
-        .btn-turno:hover {
-            transform: scale(1.02);
+        .logout-btn { color: #b13e3e; }
+        .switch-to-admin { color: #2c5a7a; }
+        .switch-to-user { color: #2c5a7a; }
+        .logout-btn:hover, .switch-to-admin:hover, .switch-to-user:hover {
             background: #e0e8f2;
-        }
-
-        .btn-turno:active {
             transform: scale(0.97);
         }
 
-        /* pannello comandi */
-        .controls-panel {
-            flex: 1.2;
-            min-width: 260px;
-            background: white;
-            border-radius: 2rem;
-            padding: 1.5rem 1.6rem;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+        .view-tabs {
             display: flex;
-            flex-direction: column;
-            gap: 1.8rem;
-        }
-
-        .card-title {
-            font-weight: 700;
-            font-size: 1.3rem;
-            color: #234e6c;
-            margin-bottom: 1rem;
-            border-left: 5px solid #5fa7cf;
-            padding-left: 14px;
-        }
-
-        .legend {
-            display: flex;
-            flex-direction: column;
             gap: 12px;
-            background: #f8fafd;
-            padding: 12px 16px;
-            border-radius: 1.2rem;
+            margin-bottom: 1.8rem;
+            border-bottom: 2px solid #cbdbe280;
+            padding-bottom: 0.5rem;
         }
-
-        .legend-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            font-size: 0.9rem;
-        }
-
-        .color-badge {
-            width: 28px;
-            height: 28px;
-            border-radius: 30px;
-            display: inline-block;
-        }
-
-        .reset-btn {
-            background: #eceff5;
-            border: none;
-            padding: 12px 18px;
-            border-radius: 2rem;
-            font-weight: 600;
-            font-size: 1rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            cursor: pointer;
-            transition: all 0.2s;
-            color: #b13e3e;
-            margin-top: 12px;
-        }
-
-        .reset-btn:hover {
-            background: #ffe2e2;
-            color: #a12323;
-            transform: translateY(-2px);
-        }
-
-        .stato-libero {
-            font-size: 0.75rem;
-            background: #d4e2d4;
-            border-radius: 20px;
-            padding: 2px 10px;
-            font-weight: 500;
-        }
-
-        .footer-info {
-            margin-top: 2rem;
-            text-align: center;
-            font-size: 0.8rem;
-            color: #3b5c7a;
-            border-top: 1px solid #cbdbe280;
-            padding-top: 1.2rem;
-        }
-
-        @media (max-width: 780px) {
-            .app-container {
-                padding: 1.2rem;
-            }
-            td, th {
-                padding: 10px 5px;
-            }
-            .btn-turno {
-                padding: 4px 10px;
-                font-size: 0.9rem;
-            }
-            .dipendente-nome {
-                font-size: 0.95rem;
-            }
-        }
-
-        button {
+        .tab-btn {
             background: none;
             border: none;
+            padding: 10px 24px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            border-radius: 40px;
+            transition: 0.2s;
+            color: #4a6f8f;
+        }
+        .tab-btn.active {
+            background: #2c5a7a;
+            color: white;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
         }
 
-        .turno-actions {
+        .calendar-container {
+            background: white;
+            border-radius: 2rem;
+            padding: 1.2rem 1rem 1.5rem;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+            margin-bottom: 1rem;
+        }
+        .calendar-nav {
             display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .month-year {
+            font-size: 1.7rem;
+            font-weight: 700;
+            color: #2c5a7a;
+        }
+        .nav-btn {
+            background: #eef3fc;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 40px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .weekdays {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            text-align: center;
+            font-weight: 700;
+            color: #3a6b92;
+            margin-bottom: 10px;
+            gap: 6px;
+        }
+        .weekday {
+            padding: 10px 0;
+            background: #f0f5fb;
+            border-radius: 40px;
+        }
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 8px;
+        }
+        .calendar-day {
+            background: #fefefe;
+            border-radius: 1.2rem;
+            padding: 10px 6px;
+            min-height: 120px;
+            border: 1px solid #e2edf7;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+        .calendar-day.other-month {
+            background: #f9fbfe;
+            color: #98aec5;
+        }
+        .day-number {
+            font-weight: 700;
+            font-size: 1rem;
+            background: #eef2f7;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
             justify-content: center;
+            border-radius: 30px;
+            margin-bottom: 6px;
+        }
+        .turno-info {
+            font-size: 0.8rem;
+            padding: 4px 8px;
+            border-radius: 40px;
+            width: 100%;
+            font-weight: 600;
+            margin-top: 4px;
+        }
+        .mattina-badge { background: #ffe5bc; color: #b45f1b; }
+        .pomeriggio-badge { background: #cdeefc; color: #1d6f8f; }
+        .nessun-turno { color: #8ba0b0; font-style: italic; font-size: 0.7rem; }
+        .edit-buttons {
+            display: flex;
+            gap: 6px;
+            margin-top: 8px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .edit-btn {
+            background: #f0f4f9;
+            border: none;
+            border-radius: 30px;
+            padding: 4px 10px;
+            font-size: 0.7rem;
+            font-weight: 500;
+            cursor: pointer;
+        }
+        .turni-multipli { width: 100%; font-size: 0.7rem; margin-top: 4px; }
+        .turno-individuale {
+            background: #f4f7fc;
+            border-radius: 20px;
+            padding: 3px 5px;
+            margin: 2px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 4px;
+            font-size: 0.7rem;
+        }
+        .edit-admin-btn {
+            background: #eef2f8;
+            border: none;
+            border-radius: 30px;
+            padding: 2px 8px;
+            font-size: 0.65rem;
+            cursor: pointer;
+            margin-left: 4px;
+        }
+        .admin-quick-bar {
+            background: white;
+            border-radius: 1.5rem;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .dip-filter {
+            display: flex;
             gap: 8px;
             flex-wrap: wrap;
         }
+        .dip-filter-btn {
+            background: #eef2f8;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 40px;
+            cursor: pointer;
+            font-weight: 500;
+        }
+        .dip-filter-btn.active {
+            background: #2c5a7a;
+            color: white;
+        }
+        .reset-all-btn {
+            background: #ffe2e2;
+            color: #b13e3e;
+            border: none;
+            padding: 6px 16px;
+            border-radius: 40px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        .info-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            background: #ffffffcc;
+            border-radius: 1.5rem;
+            padding: 0.8rem 1.5rem;
+            font-size: 0.8rem;
+        }
+        .legend { display: flex; gap: 20px; flex-wrap: wrap; }
+        .toast-msg {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            background: #2c5a2e;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-weight: 500;
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
+        }
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            color: white;
+            font-size: 1.2rem;
+        }
+        @media (max-width: 850px) {
+            .app-wrapper { padding: 1rem; }
+            .calendar-day { min-height: 100px; }
+        }
     </style>
+    <!-- Firebase SDKs -->
+    <script type="importmap">
+        {
+            "imports": {
+                "firebase/app": "https://www.gstatic.com/firebasejs/12.12.0/firebase-app.js",
+                "firebase/database": "https://www.gstatic.com/firebasejs/12.12.0/firebase-database.js",
+                "firebase/analytics": "https://www.gstatic.com/firebasejs/12.12.0/firebase-analytics.js"
+            }
+        }
+    </script>
 </head>
 <body>
 
-<div class="app-container">
-    <h1>
-        🧑‍💼 Gestione Turni · Team Agile
-        <small>Mattina · Pomeriggio</small>
-    </h1>
-    <div class="sub">
-        👥 Alessandro · Maria · Tiziana · Rosy — Ogni dipendente sceglie liberamente il turno (mattina o pomeriggio)
-    </div>
-
-    <div class="dashboard">
-        <!-- TABELLA TURNI -->
-        <div class="turni-table-wrapper">
-            <table id="turniTable">
-                <thead>
-                    <tr>
-                        <th>Dipendente</th>
-                        <th>Turno attuale</th>
-                        <th>⚡ Azioni</th>
-                    </tr>
-                </thead>
-                <tbody id="turniTableBody">
-                    <!-- Popolato via JS -->
-                </tbody>
-            </table>
-        </div>
-
-        <!-- PANNELLO CONTROLLI & STATO -->
-        <div class="controls-panel">
-            <div>
-                <div class="card-title">📋 Info & Legenda</div>
-                <div class="legend">
-                    <div class="legend-item"><div class="color-badge" style="background:#ffe8c7; border-left:5px solid #f7b05e;"></div> <strong>Mattina</strong> 🌅 (08:00 - 13:00)</div>
-                    <div class="legend-item"><div class="color-badge" style="background:#d9effa; border-left:5px solid #3eacd1;"></div> <strong>Pomeriggio</strong> ☀️ (14:00 - 19:00)</div>
-                    <div class="legend-item"><span class="stato-libero">✅ turno modificabile</span> <span style="font-size:0.8rem;">clicca Mattina/Pomeriggio</span></div>
-                </div>
+<div class="app-wrapper" id="app">
+    <div id="loginSection" style="text-align: center; padding: 2rem 1rem;">
+        <div style="background: white; border-radius: 2rem; padding: 2rem; max-width: 480px; margin: 0 auto;">
+            <h2 style="color:#1f4870;">🔐 Accesso al sistema</h2>
+            <p style="color:#3e6b8f;">Dipendenti: nome utente = password (es. alessandro / alessandro)<br>Admin: <strong>admin / admin123</strong></p>
+            <div style="margin: 25px 0;">
+                <input type="text" id="loginUsername" placeholder="Username" style="width: 80%; padding: 12px; border-radius: 60px; border: 1px solid #ccc; margin-bottom: 12px;">
+                <input type="password" id="loginPassword" placeholder="Password" style="width: 80%; padding: 12px; border-radius: 60px; border: 1px solid #ccc;">
             </div>
-
-            <div>
-                <div class="card-title">📊 Riepilogo turni</div>
-                <div id="riepilogoStats" style="background:#f5f9fe; border-radius: 1.5rem; padding: 1rem; font-size:0.9rem;">
-                    <!-- statistiche dinamiche -->
-                </div>
-            </div>
-
-            <div>
-                <button id="resetTurniBtn" class="reset-btn">
-                    🔄 Ripristina turni predefiniti
-                </button>
-                <p style="font-size:0.7rem; margin-top:10px; color:#6c86a0;">* Turni di default: Alessandro (Mattina), Maria (Pomeriggio), Tiziana (Mattina), Rosy (Pomeriggio)</p>
+            <button id="loginBtnMain" style="background:#2c5a7a; color:white; border:none; padding: 12px 28px; border-radius: 60px; font-weight: bold; cursor:pointer;">Accedi</button>
+            <div style="margin-top: 20px; font-size:0.75rem; color:#6c86a0;">
+                🔑 Dipendenti: alessandro, maria, tiziana, rosy (password = nome)<br>
+                👑 Admin: admin / admin123
             </div>
         </div>
     </div>
-    <div class="footer-info">
-        ✨ Ogni dipendente può scegliere liberamente tra mattina e pomeriggio — gestione flessibile e in tempo reale.
+
+    <div id="mainSection" style="display: none;">
+        <div class="header">
+            <h1 id="mainTitle">📅 Gestione Turni</h1>
+            <div class="user-panel">
+                <span class="user-info" id="loggedUserSpan"></span>
+                <button id="logoutBtnMain" class="logout-btn">🚪 Esci</button>
+            </div>
+        </div>
+
+        <div id="adminTabs" class="view-tabs" style="display: none;">
+            <button id="tabDipendentiView" class="tab-btn active">👥 Vista Dipendenti</button>
+            <button id="tabAdminDashboard" class="tab-btn">📊 Dashboard Admin</button>
+        </div>
+
+        <div id="userCalendarView">
+            <div class="calendar-container">
+                <div class="calendar-nav">
+                    <button class="nav-btn" id="userPrevMonth">◀ Mese precedente</button>
+                    <div class="month-year" id="userMonthYear"></div>
+                    <button class="nav-btn" id="userNextMonth">Mese successivo ▶</button>
+                </div>
+                <div class="weekdays">
+                    <div class="weekday">Lun</div><div class="weekday">Mar</div><div class="weekday">Mer</div>
+                    <div class="weekday">Gio</div><div class="weekday">Ven</div><div class="weekday">Sab</div>
+                    <div class="weekday">Dom</div>
+                </div>
+                <div id="userCalendarGrid" class="calendar-grid"></div>
+            </div>
+            <div class="info-footer">
+                <div class="legend"><span>🌅 Mattina</span><span>☀️ Pomeriggio</span><span>✏️ Clicca per modificare i tuoi turni</span></div>
+                <div>🔐 Dati salvati su Firebase Cloud</div>
+            </div>
+        </div>
+
+        <div id="adminDashboardView" style="display: none;">
+            <div class="admin-quick-bar">
+                <div class="dip-filter">
+                    <button data-filter="all" class="dip-filter-btn active">📋 Tutti</button>
+                    <button data-filter="alessandro" class="dip-filter-btn">Alessandro</button>
+                    <button data-filter="maria" class="dip-filter-btn">Maria</button>
+                    <button data-filter="tiziana" class="dip-filter-btn">Tiziana</button>
+                    <button data-filter="rosy" class="dip-filter-btn">Rosy</button>
+                </div>
+                <button id="adminResetAllBtn" class="reset-all-btn">🔄 Reset turni globali</button>
+            </div>
+            <div class="calendar-container">
+                <div class="calendar-nav">
+                    <button class="nav-btn" id="adminPrevMonth">◀ Mese precedente</button>
+                    <div class="month-year" id="adminMonthYear"></div>
+                    <button class="nav-btn" id="adminNextMonth">Mese successivo ▶</button>
+                </div>
+                <div class="weekdays">
+                    <div class="weekday">Lun</div><div class="weekday">Mar</div><div class="weekday">Mer</div>
+                    <div class="weekday">Gio</div><div class="weekday">Ven</div><div class="weekday">Sab</div>
+                    <div class="weekday">Dom</div>
+                </div>
+                <div id="adminCalendarGrid" class="calendar-grid"></div>
+            </div>
+        </div>
     </div>
 </div>
+<div id="toastMsg" class="toast-msg">✅ Operazione completata</div>
 
-<script>
-    // ---------- DATI DIPENDENTI ----------
+<script type="module">
+    import { initializeApp } from "firebase/app";
+    import { getDatabase, ref, get, set, child, update, remove } from "firebase/database";
+    import { getAnalytics } from "firebase/analytics";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyD_gojA-DaNeyfTL3x_Wm2zEwz7qUmQpRM",
+        authDomain: "turni-e6e07.firebaseapp.com",
+        projectId: "turni-e6e07",
+        storageBucket: "turni-e6e07.firebasestorage.app",
+        messagingSenderId: "111355500806",
+        appId: "1:111355500806:web:f3592834875b70ca5ae687",
+        measurementId: "G-Y8DEW515TW"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const analytics = getAnalytics(app);
+    const database = getDatabase(app);
+    const turniRef = ref(database, 'turni');
+
+    // Costanti
     const DIPENDENTI = [
-        { id: 'alessandro', nome: 'Alessandro', turno: 'mattina' },   // default mattina
-        { id: 'maria', nome: 'Maria', turno: 'pomeriggio' },
-        { id: 'tiziana', nome: 'Tiziana', turno: 'mattina' },
-        { id: 'rosy', nome: 'Rosy', turno: 'pomeriggio' }
+        { id: "alessandro", nome: "Alessandro", password: "alessandro" },
+        { id: "maria", nome: "Maria", password: "maria" },
+        { id: "tiziana", nome: "Tiziana", password: "tiziana" },
+        { id: "rosy", nome: "Rosy", password: "rosy" }
     ];
+    const ADMIN_CRED = { username: "admin", password: "admin123" };
 
-    // Chiave per localStorage (salvataggio opzionale ma manteniamo persistenza)
-    const STORAGE_KEY = 'turni_dipendenti_team';
-
-    // Stato attuale dei turni (array di oggetti con id, turno)
-    let turniState = [];
-
-    // Helper: inizializza / carica stato da localStorage o usa default
-    function loadInitialState() {
-        const stored = localStorage.getItem(STORAGE_KEY);
-        if (stored) {
-            try {
-                const parsed = JSON.parse(stored);
-                // validazione: deve essere array con id e turno validi
-                if (Array.isArray(parsed) && parsed.every(item => item.id && (item.turno === 'mattina' || item.turno === 'pomeriggio'))) {
-                    // assicuriamoci che tutti i dipendenti siano presenti (nel caso aggiunte future)
-                    const currentIds = DIPENDENTI.map(d => d.id);
-                    const filtered = parsed.filter(p => currentIds.includes(p.id));
-                    // aggiungi eventuali mancanti con default
-                    for (let dip of DIPENDENTI) {
-                        if (!filtered.find(f => f.id === dip.id)) {
-                            filtered.push({ id: dip.id, turno: dip.turno });
-                        }
-                    }
-                    turniState = filtered;
-                    return;
-                }
-            } catch(e) { console.warn(e); }
-        }
-        // default dalla lista dipendenti
-        turniState = DIPENDENTI.map(d => ({ id: d.id, turno: d.turno }));
-    }
-
-    // Salva su localStorage
-    function persistState() {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(turniState));
-    }
-
-    // Ottieni il turno corrente di un dipendente per id
-    function getTurnoById(id) {
-        const record = turniState.find(t => t.id === id);
-        return record ? record.turno : 'mattina'; // fallback
-    }
-
-    // Cambia turno di un dipendente
-    function setTurno(id, nuovoTurno) {
-        const index = turniState.findIndex(t => t.id === id);
-        if (index !== -1 && (nuovoTurno === 'mattina' || nuovoTurno === 'pomeriggio')) {
-            turniState[index].turno = nuovoTurno;
-            persistState();
-            renderAll();  // aggiorna UI e statistiche
-        } else {
-            console.warn('Turno non valido o dipendente non trovato');
-        }
-    }
-
-    // Reset a valori predefiniti (basati su DIPENDENTI originali)
-    function resetToDefault() {
-        turniState = DIPENDENTI.map(d => ({ id: d.id, turno: d.turno }));
-        persistState();
-        renderAll();
-    }
-
-    // Render della tabella e statistiche
-    function renderTable() {
-        const tbody = document.getElementById('turniTableBody');
-        if (!tbody) return;
-
-        tbody.innerHTML = '';
-        for (let dip of DIPENDENTI) {
-            const turnoCorrente = getTurnoById(dip.id);
-            const isMattina = turnoCorrente === 'mattina';
-            const badgeClass = isMattina ? 'mattina' : 'pomeriggio';
-            const badgeLabel = isMattina ? '🌅 Mattina' : '☀️ Pomeriggio';
-            
-            const tr = document.createElement('tr');
-            
-            // Nome dipendente
-            const tdNome = document.createElement('td');
-            tdNome.className = 'dipendente-nome';
-            tdNome.textContent = dip.nome;
-            
-            // Turno attuale (badge)
-            const tdTurno = document.createElement('td');
-            const badgeSpan = document.createElement('div');
-            badgeSpan.className = `turno-badge ${badgeClass}`;
-            badgeSpan.innerHTML = `${badgeLabel}`;
-            tdTurno.appendChild(badgeSpan);
-            
-            // Azioni (bottoni Mattina / Pomeriggio)
-            const tdAzioni = document.createElement('td');
-            const actionsDiv = document.createElement('div');
-            actionsDiv.className = 'turno-actions';
-            
-            const btnMattina = document.createElement('button');
-            btnMattina.textContent = '🌅 Mattina';
-            btnMattina.className = 'btn-turno';
-            btnMattina.title = 'Imposta turno mattina';
-            btnMattina.addEventListener('click', (e) => {
-                e.stopPropagation();
-                if (getTurnoById(dip.id) !== 'mattina') {
-                    setTurno(dip.id, 'mattina');
-                } else {
-                    // opzionale: piccolo feedback se già impostato (non obbligatorio)
-                    const originalText = btnMattina.textContent;
-                    btnMattina.textContent = '✅ Mattina';
-                    setTimeout(() => { if(btnMattina) btnMattina.textContent = originalText; }, 400);
-                }
-            });
-            
-            const btnPomeriggio = document.createElement('button');
-            btnPomeriggio.textContent = '☀️ Pomeriggio';
-            btnPomeriggio.className = 'btn-turno';
-            btnPomeriggio.title = 'Imposta turno pomeriggio';
-            btnPomeriggio.addEventListener('click', (e) => {
-                e.stopPropagation();
-                if (getTurnoById(dip.id) !== 'pomeriggio') {
-                    setTurno(dip.id, 'pomeriggio');
-                } else {
-                    const original = btnPomeriggio.textContent;
-                    btnPomeriggio.textContent = '✅ Pomeriggio';
-                    setTimeout(() => { if(btnPomeriggio) btnPomeriggio.textContent = original; }, 400);
-                }
-            });
-            
-            actionsDiv.appendChild(btnMattina);
-            actionsDiv.appendChild(btnPomeriggio);
-            tdAzioni.appendChild(actionsDiv);
-            
-            tr.appendChild(tdNome);
-            tr.appendChild(tdTurno);
-            tr.appendChild(tdAzioni);
-            tbody.appendChild(tr);
-        }
-    }
+    let loggedUser = null;
+    let isAdmin = false;
+    let turniData = {}; // cache locale { userId: { dateKey: "mattina"/"pomeriggio" } }
     
-    // Statistiche e riepilogo
-    function renderStats() {
-        const container = document.getElementById('riepilogoStats');
-        if (!container) return;
-        
-        const totali = DIPENDENTI.length;
-        let countMattina = 0;
-        let countPomeriggio = 0;
-        
-        for (let dip of DIPENDENTI) {
-            const turno = getTurnoById(dip.id);
-            if (turno === 'mattina') countMattina++;
-            else countPomeriggio++;
-        }
-        
-        // dettaglio per ogni dipendente
-        const dettagli = DIPENDENTI.map(dip => {
-            const turno = getTurnoById(dip.id);
-            const icon = turno === 'mattina' ? '🌅' : '☀️';
-            const label = turno === 'mattina' ? 'Mattina' : 'Pomeriggio';
-            return `<span style="display:inline-block; background:#eef2fa; margin:4px 6px 4px 0; padding:4px 12px; border-radius:40px; font-size:0.8rem;">${dip.nome}: ${icon} ${label}</span>`;
-        }).join('');
-        
-        container.innerHTML = `
-            <div style="display:flex; justify-content:space-between; margin-bottom:12px;">
-                <span>🧑‍🤝‍🧑 Totale: ${totali}</span>
-                <span>🌅 Mattina: <strong>${countMattina}</strong></span>
-                <span>☀️ Pomeriggio: <strong>${countPomeriggio}</strong></span>
-            </div>
-            <div style="border-top: 1px solid #cfdfed; margin: 8px 0 6px;"></div>
-            <div style="font-weight:500; margin-bottom:6px;">📌 Situazione attuale:</div>
-            <div style="display: flex; flex-wrap: wrap; gap: 5px;">${dettagli}</div>
-        `;
-    }
-    
-    // Funzione che aggiorna tutto
-    function renderAll() {
-        renderTable();
-        renderStats();
-    }
-    
-    // Evento reset
-    function bindEvents() {
-        const resetBtn = document.getElementById('resetTurniBtn');
-        if (resetBtn) {
-            // rimuovo eventuali listener precedenti per evitare duplicati (semplice replace)
-            const newBtn = resetBtn.cloneNode(true);
-            resetBtn.parentNode.replaceChild(newBtn, resetBtn);
-            newBtn.addEventListener('click', (e) => {
-                if (confirm('⚠️ Ripristinare tutti i turni ai valori predefiniti? (Alessandro: Mattina, Maria: Pomeriggio, Tiziana: Mattina, Rosy: Pomeriggio)')) {
-                    resetToDefault();
-                }
-            });
-        }
-    }
-    
-    // Inizializzazione completa
-    function init() {
-        loadInitialState();
-        persistState(); // garantisce coerenza in storage dopo caricamento
-        renderAll();
-        bindEvents();
-        // Opzionale: aggiungi un listener per aggiornare eventuali modifiche da altri tab (non necessario)
-        window.addEventListener('storage', (e) => {
-            if (e.key === STORAGE_KEY) {
-                loadInitialState();
-                renderAll();
+    let currentUserMonth = new Date().getMonth();
+    let currentUserYear = new Date().getFullYear();
+    let currentAdminMonth = new Date().getMonth();
+    let currentAdminYear = new Date().getFullYear();
+    let adminFilter = "all";
+
+    // Helper: carica turni da Firebase
+    async function loadTurniFromFirebase() {
+        try {
+            const snapshot = await get(turniRef);
+            if (snapshot.exists()) {
+                turniData = snapshot.val();
+            } else {
+                turniData = {};
             }
+            // Assicura struttura per ogni dipendente
+            for (let dip of DIPENDENTI) {
+                if (!turniData[dip.id]) turniData[dip.id] = {};
+            }
+            return true;
+        } catch (error) {
+            console.error("Errore caricamento turni:", error);
+            showToast("Errore connessione Firebase");
+            return false;
+        }
+    }
+
+    // Salva un turno specifico su Firebase
+    async function saveTurnoToFirebase(userId, dateKey, turno) {
+        try {
+            const userTurniRef = ref(database, `turni/${userId}/${dateKey}`);
+            if (turno === "mattina" || turno === "pomeriggio") {
+                await set(userTurniRef, turno);
+            } else {
+                await remove(userTurniRef);
+            }
+            // Aggiorna cache locale
+            if (!turniData[userId]) turniData[userId] = {};
+            if (turno) turniData[userId][dateKey] = turno;
+            else delete turniData[userId][dateKey];
+            return true;
+        } catch (error) {
+            console.error("Errore salvataggio:", error);
+            showToast("Errore nel salvataggio su cloud");
+            return false;
+        }
+    }
+
+    async function resetAllTurniGlobali() {
+        try {
+            const emptyData = {};
+            for (let dip of DIPENDENTI) emptyData[dip.id] = {};
+            await set(turniRef, emptyData);
+            turniData = emptyData;
+            showToast("✅ Tutti i turni resettati!");
+            refreshCurrentView();
+        } catch (error) {
+            showToast("Errore reset turni");
+        }
+    }
+
+    function getTurno(userId, dateKey) {
+        return turniData[userId]?.[dateKey] || null;
+    }
+
+    async function setTurno(userId, dateKey, turno) {
+        const success = await saveTurnoToFirebase(userId, dateKey, turno);
+        if (success) refreshCurrentView();
+    }
+
+    function formatDateKey(date) {
+        let y = date.getFullYear();
+        let m = String(date.getMonth() + 1).padStart(2, '0');
+        let d = String(date.getDate()).padStart(2, '0');
+        return `${y}-${m}-${d}`;
+    }
+
+    function getDaysInMonth(year, month) {
+        const firstDay = new Date(year, month, 1);
+        let startWeekday = firstDay.getDay();
+        let startOffset = startWeekday === 0 ? 6 : startWeekday - 1;
+        const daysInMonth = new Date(year, month + 1, 0).getDate();
+        const prevMonthDays = new Date(year, month, 0).getDate();
+        let days = [];
+        for (let i = startOffset - 1; i >= 0; i--) days.push({ date: new Date(year, month - 1, prevMonthDays - i), isCurrentMonth: false });
+        for (let i = 1; i <= daysInMonth; i++) days.push({ date: new Date(year, month, i), isCurrentMonth: true });
+        let remaining = 42 - days.length;
+        for (let i = 1; i <= remaining; i++) days.push({ date: new Date(year, month + 1, i), isCurrentMonth: false });
+        return days;
+    }
+
+    function renderUserCalendar() {
+        if (!loggedUser || isAdmin) return;
+        const grid = document.getElementById("userCalendarGrid");
+        if (!grid) return;
+        const monthNames = ["Gennaio","Febbraio","Marzo","Aprile","Maggio","Giugno","Luglio","Agosto","Settembre","Ottobre","Novembre","Dicembre"];
+        document.getElementById("userMonthYear").innerHTML = `${monthNames[currentUserMonth]} ${currentUserYear}`;
+        const days = getDaysInMonth(currentUserYear, currentUserMonth);
+        grid.innerHTML = "";
+        for (let dayObj of days) {
+            const date = dayObj.date;
+            const dateKey = formatDateKey(date);
+            const turno = getTurno(loggedUser, dateKey);
+            const dayDiv = document.createElement("div");
+            dayDiv.className = "calendar-day";
+            if (!dayObj.isCurrentMonth) dayDiv.classList.add("other-month");
+            const numDiv = document.createElement("div");
+            numDiv.className = "day-number";
+            numDiv.textContent = date.getDate();
+            dayDiv.appendChild(numDiv);
+            const turnoDiv = document.createElement("div");
+            turnoDiv.className = `turno-info ${turno === 'mattina' ? 'mattina-badge' : turno === 'pomeriggio' ? 'pomeriggio-badge' : 'nessun-turno'}`;
+            turnoDiv.innerHTML = turno ? (turno === 'mattina' ? '🌅 Mattina' : '☀️ Pomeriggio') : '— non assegnato —';
+            dayDiv.appendChild(turnoDiv);
+            const btnDiv = document.createElement("div");
+            btnDiv.className = "edit-buttons";
+            const btnMatt = document.createElement("button");
+            btnMatt.textContent = "🌅 Mattina";
+            btnMatt.className = "edit-btn";
+            btnMatt.addEventListener("click", async () => { await setTurno(loggedUser, dateKey, "mattina"); showToast("Turno Mattina salvato"); });
+            const btnPom = document.createElement("button");
+            btnPom.textContent = "☀️ Pomeriggio";
+            btnPom.className = "edit-btn";
+            btnPom.addEventListener("click", async () => { await setTurno(loggedUser, dateKey, "pomeriggio"); showToast("Turno Pomeriggio salvato"); });
+            const btnDel = document.createElement("button");
+            btnDel.textContent = "✖️ Libero";
+            btnDel.className = "edit-btn";
+            btnDel.addEventListener("click", async () => { await setTurno(loggedUser, dateKey, null); showToast("Turno rimosso"); });
+            btnDiv.appendChild(btnMatt); btnDiv.appendChild(btnPom); btnDiv.appendChild(btnDel);
+            dayDiv.appendChild(btnDiv);
+            grid.appendChild(dayDiv);
+        }
+    }
+
+    function renderAdminDashboard() {
+        const grid = document.getElementById("adminCalendarGrid");
+        if (!grid) return;
+        const monthNames = ["Gennaio","Febbraio","Marzo","Aprile","Maggio","Giugno","Luglio","Agosto","Settembre","Ottobre","Novembre","Dicembre"];
+        document.getElementById("adminMonthYear").innerHTML = `${monthNames[currentAdminMonth]} ${currentAdminYear}`;
+        const days = getDaysInMonth(currentAdminYear, currentAdminMonth);
+        grid.innerHTML = "";
+        const dipendentiDaMostrare = adminFilter === "all" ? DIPENDENTI : DIPENDENTI.filter(d => d.id === adminFilter);
+        for (let dayObj of days) {
+            const date = dayObj.date;
+            const dateKey = formatDateKey(date);
+            const dayDiv = document.createElement("div");
+            dayDiv.className = "calendar-day";
+            if (!dayObj.isCurrentMonth) dayDiv.classList.add("other-month");
+            const numDiv = document.createElement("div");
+            numDiv.className = "day-number";
+            numDiv.textContent = date.getDate();
+            dayDiv.appendChild(numDiv);
+            const turniContainer = document.createElement("div");
+            turniContainer.className = "turni-multipli";
+            for (let dip of dipendentiDaMostrare) {
+                const turno = getTurno(dip.id, dateKey);
+                const row = document.createElement("div");
+                row.className = "turno-individuale";
+                row.innerHTML = `<strong style="font-size:0.7rem;">${dip.nome}:</strong> ${turno ? `<span class="${turno === 'mattina' ? 'mattina-badge' : 'pomeriggio-badge'}">${turno === 'mattina' ? '🌅 Mattina' : '☀️ Pomeriggio'}</span>` : '<span style="color:#aaa;">—</span>'}`;
+                const btnGroup = document.createElement("span");
+                const btnMatt = document.createElement("button");
+                btnMatt.textContent = "M";
+                btnMatt.title = "Mattina";
+                btnMatt.className = "edit-admin-btn";
+                btnMatt.addEventListener("click", async (e) => { e.stopPropagation(); await setTurno(dip.id, dateKey, "mattina"); showToast(`${dip.nome} → Mattina`); });
+                const btnPom = document.createElement("button");
+                btnPom.textContent = "P";
+                btnPom.title = "Pomeriggio";
+                btnPom.className = "edit-admin-btn";
+                btnPom.addEventListener("click", async (e) => { e.stopPropagation(); await setTurno(dip.id, dateKey, "pomeriggio"); showToast(`${dip.nome} → Pomeriggio`); });
+                const btnDel = document.createElement("button");
+                btnDel.textContent = "X";
+                btnDel.title = "Libero";
+                btnDel.className = "edit-admin-btn";
+                btnDel.addEventListener("click", async (e) => { e.stopPropagation(); await setTurno(dip.id, dateKey, null); showToast(`${dip.nome} turno rimosso`); });
+                btnGroup.append(btnMatt, btnPom, btnDel);
+                row.appendChild(btnGroup);
+                turniContainer.appendChild(row);
+            }
+            dayDiv.appendChild(turniContainer);
+            grid.appendChild(dayDiv);
+        }
+    }
+
+    function refreshCurrentView() {
+        if (isAdmin) {
+            if (document.getElementById("adminDashboardView").style.display !== "none") renderAdminDashboard();
+            else renderUserCalendar();
+        } else {
+            renderUserCalendar();
+        }
+    }
+
+    async function updateUIForRole() {
+        if (!loggedUser) return;
+        document.getElementById("loginSection").style.display = "none";
+        document.getElementById("mainSection").style.display = "block";
+        document.getElementById("loggedUserSpan").innerHTML = isAdmin ? "👑 Admin" : `👤 ${DIPENDENTI.find(d=>d.id===loggedUser)?.nome || loggedUser}`;
+        document.getElementById("mainTitle").innerHTML = isAdmin ? "👑 Pannello di Controllo Admin" : "📅 Il mio Calendario Turni";
+        if (isAdmin) {
+            document.getElementById("adminTabs").style.display = "flex";
+            document.getElementById("userCalendarView").style.display = "block";
+            document.getElementById("adminDashboardView").style.display = "none";
+            document.getElementById("tabDipendentiView").classList.add("active");
+            document.getElementById("tabAdminDashboard").classList.remove("active");
+            renderUserCalendar();
+        } else {
+            document.getElementById("adminTabs").style.display = "none";
+            document.getElementById("userCalendarView").style.display = "block";
+            document.getElementById("adminDashboardView").style.display = "none";
+            renderUserCalendar();
+        }
+    }
+
+    function switchToUserTab() {
+        if (isAdmin) {
+            document.getElementById("userCalendarView").style.display = "block";
+            document.getElementById("adminDashboardView").style.display = "none";
+            document.getElementById("tabDipendentiView").classList.add("active");
+            document.getElementById("tabAdminDashboard").classList.remove("active");
+            renderUserCalendar();
+        }
+    }
+    function switchToAdminTab() {
+        if (isAdmin) {
+            document.getElementById("userCalendarView").style.display = "none";
+            document.getElementById("adminDashboardView").style.display = "block";
+            document.getElementById("tabAdminDashboard").classList.add("active");
+            document.getElementById("tabDipendentiView").classList.remove("active");
+            renderAdminDashboard();
+        }
+    }
+
+    async function login(username, pwd) {
+        if (username === ADMIN_CRED.username && pwd === ADMIN_CRED.password) {
+            isAdmin = true;
+            loggedUser = "admin";
+            await loadTurniFromFirebase();
+            await updateUIForRole();
+            showToast("Benvenuto Admin! Dati da Firebase caricati.");
+            return true;
+        }
+        const dip = DIPENDENTI.find(d => d.id === username && d.password === pwd);
+        if (dip) {
+            isAdmin = false;
+            loggedUser = dip.id;
+            await loadTurniFromFirebase();
+            await updateUIForRole();
+            showToast(`Benvenuto ${dip.nome}, dati caricati dal cloud.`);
+            return true;
+        }
+        showToast("❌ Credenziali errate");
+        return false;
+    }
+
+    function logout() {
+        loggedUser = null;
+        isAdmin = false;
+        document.getElementById("loginSection").style.display = "block";
+        document.getElementById("mainSection").style.display = "none";
+        showToast("Logout effettuato");
+    }
+
+    function showToast(msg) {
+        const toast = document.getElementById("toastMsg");
+        toast.style.opacity = "1";
+        toast.innerText = msg;
+        if (window.toastTimeout) clearTimeout(window.toastTimeout);
+        window.toastTimeout = setTimeout(() => toast.style.opacity = "0", 2000);
+    }
+
+    function bindEvents() {
+        document.getElementById("loginBtnMain").addEventListener("click", () => {
+            const user = document.getElementById("loginUsername").value.trim();
+            const pwd = document.getElementById("loginPassword").value;
+            login(user, pwd);
+        });
+        document.getElementById("logoutBtnMain").addEventListener("click", () => logout());
+        document.getElementById("userPrevMonth").addEventListener("click", () => { currentUserMonth--; if(currentUserMonth<0){currentUserMonth=11; currentUserYear--;} renderUserCalendar(); });
+        document.getElementById("userNextMonth").addEventListener("click", () => { currentUserMonth++; if(currentUserMonth>11){currentUserMonth=0; currentUserYear++;} renderUserCalendar(); });
+        document.getElementById("adminPrevMonth").addEventListener("click", () => { currentAdminMonth--; if(currentAdminMonth<0){currentAdminMonth=11; currentAdminYear--;} if(isAdmin && document.getElementById("adminDashboardView").style.display !== "none") renderAdminDashboard(); });
+        document.getElementById("adminNextMonth").addEventListener("click", () => { currentAdminMonth++; if(currentAdminMonth>11){currentAdminMonth=0; currentAdminYear++;} if(isAdmin && document.getElementById("adminDashboardView").style.display !== "none") renderAdminDashboard(); });
+        document.getElementById("tabDipendentiView")?.addEventListener("click", switchToUserTab);
+        document.getElementById("tabAdminDashboard")?.addEventListener("click", switchToAdminTab);
+        document.getElementById("adminResetAllBtn")?.addEventListener("click", async () => { if(confirm("Reset totale turni per tutti i dipendenti?")) await resetAllTurniGlobali(); });
+        document.querySelectorAll(".dip-filter-btn").forEach(btn => {
+            btn.addEventListener("click", (e) => {
+                document.querySelectorAll(".dip-filter-btn").forEach(b => b.classList.remove("active"));
+                btn.classList.add("active");
+                adminFilter = btn.getAttribute("data-filter");
+                if (isAdmin && document.getElementById("adminDashboardView").style.display !== "none") renderAdminDashboard();
+            });
         });
     }
-    
-    // Avvio
+
+    async function init() {
+        bindEvents();
+        // Mostra login senza caricare nulla prima
+        document.getElementById("loginSection").style.display = "block";
+        document.getElementById("mainSection").style.display = "none";
+    }
     init();
 </script>
 </body>
