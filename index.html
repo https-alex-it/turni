@@ -2,8 +2,8 @@
 <html lang="it">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>Gestione Turni - Firebase Cloud (Utenti + Turni)</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
+    <title>Gestione Turni PRO - Admin Mobile</title>
     <style>
         * {
             box-sizing: border-box;
@@ -14,18 +14,19 @@
             background: linear-gradient(135deg, #e0eafc 0%, #cfdef3 100%);
             margin: 0;
             min-height: 100vh;
-            padding: 20px 16px;
+            padding: 16px 12px;
         }
 
         .app-wrapper {
             max-width: 1400px;
             width: 100%;
             margin: 0 auto;
-            background: rgba(255,255,255,0.75);
-            backdrop-filter: blur(3px);
-            border-radius: 2.5rem;
-            box-shadow: 0 25px 45px -12px rgba(0,0,0,0.25);
-            padding: 1.5rem 1.8rem 2rem;
+            background: rgba(255,255,255,0.85);
+            backdrop-filter: blur(4px);
+            border-radius: 2rem;
+            box-shadow: 0 25px 45px -12px rgba(0,0,0,0.3);
+            padding: 1.2rem 1rem 1.8rem;
+            transition: all 0.2s;
         }
 
         .header {
@@ -33,16 +34,16 @@
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
-            gap: 15px;
-            margin-bottom: 1.5rem;
-            border-bottom: 2px solid #ffffffaa;
-            padding-bottom: 0.8rem;
+            gap: 12px;
+            margin-bottom: 1.2rem;
+            border-bottom: 2px solid #ffffffcc;
+            padding-bottom: 0.7rem;
         }
         h1 {
-            font-size: 1.8rem;
+            font-size: 1.5rem;
             font-weight: 700;
             margin: 0;
-            background: linear-gradient(145deg, #1f4870, #13324b);
+            background: linear-gradient(145deg, #1f4870, #0f2c42);
             background-clip: text;
             -webkit-background-clip: text;
             color: transparent;
@@ -50,28 +51,28 @@
         .user-panel {
             background: white;
             border-radius: 60px;
-            padding: 6px 18px 6px 24px;
+            padding: 5px 14px 5px 20px;
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 12px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.05);
         }
-        .user-info { font-weight: 600; color: #1e4a76; }
+        .user-info { font-weight: 600; color: #1e4a76; font-size: 0.9rem; }
         .logout-btn, .switch-btn {
             background: #eef2f8;
             border: none;
-            padding: 6px 14px;
+            padding: 5px 12px;
             border-radius: 40px;
             font-weight: 500;
             cursor: pointer;
+            font-size: 0.8rem;
         }
         .logout-btn { color: #b13e3e; }
-        .switch-btn { color: #2c5a7a; }
 
         .view-tabs {
             display: flex;
-            gap: 12px;
-            margin-bottom: 1.8rem;
+            gap: 8px;
+            margin-bottom: 1.5rem;
             border-bottom: 2px solid #cbdbe280;
             padding-bottom: 0.5rem;
             flex-wrap: wrap;
@@ -79,38 +80,41 @@
         .tab-btn {
             background: none;
             border: none;
-            padding: 10px 24px;
-            font-size: 1rem;
+            padding: 8px 18px;
+            font-size: 0.9rem;
             font-weight: 600;
             cursor: pointer;
             border-radius: 40px;
             color: #4a6f8f;
+            transition: 0.2s;
         }
         .tab-btn.active {
             background: #2c5a7a;
             color: white;
         }
 
+        /* componenti responsive */
         .calendar-container {
             background: white;
-            border-radius: 2rem;
-            padding: 1.2rem 1rem 1.5rem;
+            border-radius: 1.5rem;
+            padding: 1rem;
             box-shadow: 0 8px 20px rgba(0,0,0,0.08);
             margin-bottom: 1rem;
+            overflow-x: auto;
         }
         .calendar-nav {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 1.5rem;
+            margin-bottom: 1.2rem;
             flex-wrap: wrap;
-            gap: 12px;
+            gap: 8px;
         }
-        .month-year { font-size: 1.7rem; font-weight: 700; color: #2c5a7a; }
+        .month-year { font-size: 1.4rem; font-weight: 700; color: #2c5a7a; }
         .nav-btn {
             background: #eef3fc;
             border: none;
-            padding: 8px 16px;
+            padding: 6px 14px;
             border-radius: 40px;
             font-weight: 600;
             cursor: pointer;
@@ -122,19 +126,19 @@
             font-weight: 700;
             color: #3a6b92;
             margin-bottom: 10px;
-            gap: 6px;
+            gap: 4px;
         }
-        .weekday { padding: 10px 0; background: #f0f5fb; border-radius: 40px; }
+        .weekday { padding: 8px 0; background: #f0f5fb; border-radius: 40px; font-size: 0.8rem; }
         .calendar-grid {
             display: grid;
             grid-template-columns: repeat(7, 1fr);
-            gap: 8px;
+            gap: 6px;
         }
         .calendar-day {
             background: #fefefe;
-            border-radius: 1.2rem;
-            padding: 10px 6px;
-            min-height: 120px;
+            border-radius: 1rem;
+            padding: 6px 4px;
+            min-height: 100px;
             border: 1px solid #e2edf7;
             display: flex;
             flex-direction: column;
@@ -144,180 +148,211 @@
         .calendar-day.other-month { background: #f9fbfe; color: #98aec5; }
         .day-number {
             font-weight: 700;
-            font-size: 1rem;
+            font-size: 0.9rem;
             background: #eef2f7;
-            width: 30px;
-            height: 30px;
+            width: 28px;
+            height: 28px;
             display: flex;
             align-items: center;
             justify-content: center;
             border-radius: 30px;
-            margin-bottom: 6px;
+            margin-bottom: 4px;
         }
         .turno-info {
-            font-size: 0.8rem;
-            padding: 4px 8px;
+            font-size: 0.7rem;
+            padding: 3px 6px;
             border-radius: 40px;
             font-weight: 600;
-            margin-top: 4px;
+            margin-top: 2px;
         }
         .mattina-badge { background: #ffe5bc; color: #b45f1b; }
         .pomeriggio-badge { background: #cdeefc; color: #1d6f8f; }
-        .nessun-turno { color: #8ba0b0; font-style: italic; font-size: 0.7rem; }
-        .edit-buttons { display: flex; gap: 6px; margin-top: 8px; justify-content: center; flex-wrap: wrap; }
+        .nessun-turno { color: #8ba0b0; font-style: italic; font-size: 0.65rem; }
+        .edit-buttons { display: flex; gap: 5px; margin-top: 6px; justify-content: center; flex-wrap: wrap; }
         .edit-btn {
             background: #f0f4f9;
             border: none;
             border-radius: 30px;
-            padding: 4px 10px;
-            font-size: 0.7rem;
+            padding: 3px 8px;
+            font-size: 0.65rem;
             cursor: pointer;
         }
-        .turni-multipli { width: 100%; font-size: 0.7rem; margin-top: 4px; }
-        .turno-individuale {
-            background: #f4f7fc;
-            border-radius: 20px;
-            padding: 3px 5px;
-            margin: 2px 0;
+        
+        /* VISTA GIORNO PER GIORNO (admin su dipendenti) - lista completa */
+        .day-by-day-panel {
+            background: white;
+            border-radius: 1.5rem;
+            padding: 0.8rem;
+            margin-top: 0.8rem;
+        }
+        .day-list-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            flex-wrap: wrap;
+            margin-bottom: 1rem;
+            gap: 8px;
+            padding: 0 6px;
+        }
+        .day-list-title {
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: #1f4870;
+        }
+        .day-list-sub {
+            font-size: 0.7rem;
+            background: #eef2f8;
+            padding: 4px 12px;
+            border-radius: 60px;
+        }
+        .day-list-scroll {
+            max-height: 65vh;
+            overflow-y: auto;
+            border-radius: 1.2rem;
+            padding-right: 4px;
+        }
+        .day-card {
+            background: #f9fcff;
+            border-radius: 1.2rem;
+            margin-bottom: 12px;
+            padding: 12px 14px;
+            border-left: 5px solid #2c5a7a;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+            transition: 0.1s;
+        }
+        .day-card-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            gap: 4px;
-            font-size: 0.7rem;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 10px;
+            border-bottom: 1px dashed #cbdde9;
+            padding-bottom: 6px;
         }
-        .edit-admin-btn {
+        .day-card-date {
+            font-weight: 800;
+            font-size: 1rem;
+            background: #e6f0f9;
+            padding: 4px 12px;
+            border-radius: 40px;
+            color: #1f4870;
+        }
+        .day-card-weekday {
+            font-size: 0.75rem;
+            color: #5c7f9c;
+        }
+        .turni-list-by-day {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .turno-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: white;
+            padding: 8px 12px;
+            border-radius: 60px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .dipendente-name {
+            font-weight: 600;
+            font-size: 0.85rem;
+            min-width: 100px;
+        }
+        .turno-badge-sm {
+            font-size: 0.7rem;
+            padding: 4px 12px;
+            border-radius: 40px;
+            font-weight: 600;
+        }
+        .turno-actions {
+            display: flex;
+            gap: 6px;
+        }
+        .action-icon {
             background: #eef2f8;
             border: none;
             border-radius: 30px;
-            padding: 2px 8px;
-            font-size: 0.65rem;
+            padding: 4px 12px;
+            font-size: 0.7rem;
+            font-weight: 600;
             cursor: pointer;
-            margin-left: 4px;
+        }
+        .action-icon.mattina-action { background: #ffe0b5; color: #a05313; }
+        .action-icon.pomeriggio-action { background: #cae9fc; color: #146b8a; }
+        .action-icon.libero-action { background: #f0f0f0; color: #6c6f78; }
+        .empty-day-msg {
+            text-align: center;
+            color: #94a9c2;
+            font-style: italic;
+            padding: 12px;
+            background: #f7fafd;
+            border-radius: 60px;
+            font-size: 0.75rem;
         }
         .admin-quick-bar {
             background: white;
             border-radius: 1.5rem;
-            padding: 1rem;
-            margin-bottom: 1.5rem;
+            padding: 0.8rem 1rem;
+            margin-bottom: 1.2rem;
             display: flex;
             flex-wrap: wrap;
-            gap: 10px;
+            gap: 12px;
             align-items: center;
             justify-content: space-between;
         }
-        .dip-filter { display: flex; gap: 8px; flex-wrap: wrap; }
+        .dip-filter {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
         .dip-filter-btn {
             background: #eef2f8;
             border: none;
             padding: 6px 14px;
             border-radius: 40px;
             cursor: pointer;
-        }
-        .dip-filter-btn.active { background: #2c5a7a; color: white; }
-
-        .users-management {
-            background: white;
-            border-radius: 1.5rem;
-            padding: 1.2rem;
-            margin-bottom: 1.5rem;
-        }
-        .users-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            margin-bottom: 1rem;
-            gap: 15px;
-        }
-        .add-user-form {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-            align-items: center;
-        }
-        .add-user-form input {
-            padding: 10px 15px;
-            border-radius: 40px;
-            border: 1px solid #ccc;
-            font-size: 0.9rem;
-        }
-        .add-user-form button {
-            background: #2c5a7a;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 40px;
-            cursor: pointer;
-        }
-        .users-list {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 12px;
-            margin-top: 15px;
-        }
-        .user-card {
-            background: #f0f5fb;
-            border-radius: 60px;
-            padding: 8px 16px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-        .user-card span { font-weight: 600; }
-        .delete-user-btn {
-            background: #ffe2e2;
-            border: none;
-            border-radius: 30px;
-            padding: 4px 12px;
-            color: #b13e3e;
-            cursor: pointer;
             font-size: 0.8rem;
         }
+        .dip-filter-btn.active { background: #2c5a7a; color: white; }
         .reset-all-btn {
             background: #ffe2e2;
             color: #b13e3e;
             border: none;
-            padding: 6px 16px;
+            padding: 6px 14px;
             border-radius: 40px;
             cursor: pointer;
+            font-size: 0.75rem;
         }
-        .info-footer {
-            background: #ffffffcc;
-            border-radius: 1.5rem;
-            padding: 0.8rem 1.5rem;
-            font-size: 0.8rem;
-            display: flex;
-            justify-content: space-between;
-            flex-wrap: wrap;
-        }
-        .legend { display: flex; gap: 20px; flex-wrap: wrap; }
-        .toast-msg {
-            position: fixed;
-            bottom: 25px;
-            right: 25px;
-            background: #2c5a2e;
-            color: white;
-            padding: 10px 20px;
-            border-radius: 50px;
-            z-index: 1000;
-            opacity: 0;
-            transition: opacity 0.3s;
-            pointer-events: none;
-        }
-        .loading-spinner {
-            display: inline-block;
-            width: 16px;
-            height: 16px;
-            border: 2px solid #fff;
-            border-radius: 50%;
-            border-top-color: transparent;
-            animation: spin 0.6s linear infinite;
-            margin-left: 8px;
-        }
-        @keyframes spin { to { transform: rotate(360deg); } }
-        @media (max-width: 850px) {
+        .users-management { background: white; border-radius: 1.5rem; padding: 1rem; margin-bottom: 1rem; }
+        .users-header { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; margin-bottom: 1rem; align-items: center; }
+        .add-user-form { display: flex; gap: 8px; flex-wrap: wrap; }
+        .add-user-form input { padding: 8px 12px; border-radius: 40px; border: 1px solid #ccc; font-size: 0.8rem; }
+        .add-user-form button { background: #2c5a7a; color: white; border: none; padding: 8px 18px; border-radius: 40px; cursor: pointer; }
+        .users-list { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
+        .user-card { background: #f0f5fb; border-radius: 60px; padding: 6px 14px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+        .delete-user-btn { background: #ffe2e2; border: none; border-radius: 30px; padding: 3px 10px; color: #b13e3e; cursor: pointer; font-size: 0.7rem; }
+        .info-footer { background: #ffffffcc; border-radius: 1.2rem; padding: 0.6rem 1rem; font-size: 0.7rem; display: flex; justify-content: space-between; flex-wrap: wrap; }
+        .legend { display: flex; gap: 16px; flex-wrap: wrap; }
+        .toast-msg { position: fixed; bottom: 20px; right: 20px; background: #1f4870; color: white; padding: 10px 18px; border-radius: 60px; z-index: 1000; opacity: 0; transition: opacity 0.2s; pointer-events: none; font-size: 0.8rem; }
+        @media (max-width: 680px) {
+            body { padding: 12px 8px; }
             .app-wrapper { padding: 1rem; }
-            .calendar-day { min-height: 100px; }
+            .calendar-day { min-height: 85px; }
+            .weekday { font-size: 0.7rem; padding: 5px 0; }
+            .day-number { width: 24px; height: 24px; font-size: 0.8rem; }
+            .turno-row { flex-direction: column; align-items: flex-start; }
+            .dipendente-name { min-width: auto; }
+            .turno-actions { margin-left: auto; }
+            .day-card-header { flex-direction: column; align-items: flex-start; }
+        }
+        @media (max-width: 480px) {
+            .edit-buttons button { font-size: 0.6rem; padding: 2px 6px; }
+            .turno-badge-sm { font-size: 0.65rem; }
         }
     </style>
     <script type="importmap">
@@ -331,17 +366,16 @@
     </script>
 </head>
 <body>
-
 <div class="app-wrapper" id="app">
-    <div id="loginSection" style="text-align: center; padding: 2rem 1rem;">
-        <div style="background: white; border-radius: 2rem; padding: 2rem; max-width: 480px; margin: 0 auto;">
-            <h2 style="color:#1f4870;">🔐 Accesso al sistema</h2>
-            <div style="margin: 25px 0;">
-                <input type="text" id="loginUsername" placeholder="Username" style="width: 80%; padding: 12px; border-radius: 60px; border: 1px solid #ccc; margin-bottom: 12px;">
-                <input type="password" id="loginPassword" placeholder="Password" style="width: 80%; padding: 12px; border-radius: 60px; border: 1px solid #ccc;">
+    <div id="loginSection" style="text-align: center; padding: 1.5rem 0.5rem;">
+        <div style="background: white; border-radius: 2rem; padding: 1.8rem; max-width: 420px; margin: 0 auto;">
+            <h2 style="color:#1f4870;">🔐 Accesso Turni</h2>
+            <div style="margin: 20px 0;">
+                <input type="text" id="loginUsername" placeholder="Username (admin o dipendente)" style="width: 90%; padding: 12px; border-radius: 60px; border:1px solid #ccc; margin-bottom: 12px;">
+                <input type="password" id="loginPassword" placeholder="Password" style="width: 90%; padding: 12px; border-radius: 60px; border:1px solid #ccc;">
             </div>
-            <button id="loginBtnMain" style="background:#2c5a7a; color:white; border:none; padding: 12px 28px; border-radius: 60px; font-weight: bold; cursor:pointer;">Accedi</button>
-            <div style="margin-top: 15px; font-size:0.7rem; color:#6c86a0;">🔐 Tutti i dati (utenti, credenziali, turni) salvati su Firebase Cloud</div>
+            <button id="loginBtnMain" style="background:#2c5a7a; color:white; border:none; padding: 10px 28px; border-radius: 60px; font-weight:bold;">Accedi</button>
+            <div style="margin-top: 12px; font-size:0.7rem;">📌 Admin: admin / admin123 | Dipendenti: alessandro/alessandro ...</div>
         </div>
     </div>
 
@@ -356,27 +390,26 @@
 
         <div id="adminTabs" class="view-tabs" style="display: none;">
             <button id="tabDipendentiView" class="tab-btn active">👥 Vista Dipendenti</button>
-            <button id="tabAdminDashboard" class="tab-btn">📊 Dashboard Turni</button>
+            <button id="tabAdminDashboard" class="tab-btn">📊 Calendario Generale</button>
+            <button id="tabDayByDayView" class="tab-btn">📋 Giorno per Giorno</button>
             <button id="tabUsersManagement" class="tab-btn">👤 Gestione Utenti</button>
         </div>
 
+        <!-- Vista calendario classico dipendente (per singolo utente) -->
         <div id="userCalendarView">
             <div class="calendar-container">
                 <div class="calendar-nav">
-                    <button class="nav-btn" id="userPrevMonth">◀ Mese</button>
+                    <button class="nav-btn" id="userPrevMonth">◀</button>
                     <div class="month-year" id="userMonthYear"></div>
-                    <button class="nav-btn" id="userNextMonth">Mese ▶</button>
+                    <button class="nav-btn" id="userNextMonth">▶</button>
                 </div>
-                <div class="weekdays">
-                    <div class="weekday">Lun</div><div class="weekday">Mar</div><div class="weekday">Mer</div>
-                    <div class="weekday">Gio</div><div class="weekday">Ven</div><div class="weekday">Sab</div>
-                    <div class="weekday">Dom</div>
-                </div>
+                <div class="weekdays"><div class="weekday">Lun</div><div class="weekday">Mar</div><div class="weekday">Mer</div><div class="weekday">Gio</div><div class="weekday">Ven</div><div class="weekday">Sab</div><div class="weekday">Dom</div></div>
                 <div id="userCalendarGrid" class="calendar-grid"></div>
             </div>
-            <div class="info-footer"><div class="legend">🌅 Mattina &nbsp; ☀️ Pomeriggio</div><div>✅ Dati salvati automaticamente su cloud</div></div>
+            <div class="info-footer"><div class="legend">🌅 Mattina &nbsp; ☀️ Pomeriggio</div><div>✅ Cloud real-time</div></div>
         </div>
 
+        <!-- Admin: Calendario generale con filtro utente -->
         <div id="adminDashboardView" style="display: none;">
             <div class="admin-quick-bar">
                 <div class="dip-filter" id="adminFilterContainer"></div>
@@ -384,32 +417,43 @@
             </div>
             <div class="calendar-container">
                 <div class="calendar-nav">
-                    <button class="nav-btn" id="adminPrevMonth">◀ Mese</button>
+                    <button class="nav-btn" id="adminPrevMonth">◀</button>
                     <div class="month-year" id="adminMonthYear"></div>
-                    <button class="nav-btn" id="adminNextMonth">Mese ▶</button>
+                    <button class="nav-btn" id="adminNextMonth">▶</button>
                 </div>
-                <div class="weekdays">
-                    <div class="weekday">Lun</div><div class="weekday">Mar</div><div class="weekday">Mer</div>
-                    <div class="weekday">Gio</div><div class="weekday">Ven</div><div class="weekday">Sab</div>
-                    <div class="weekday">Dom</div>
-                </div>
+                <div class="weekdays"><div class="weekday">Lun</div><div class="weekday">Mar</div><div class="weekday">Mer</div><div class="weekday">Gio</div><div class="weekday">Ven</div><div class="weekday">Sab</div><div class="weekday">Dom</div></div>
                 <div id="adminCalendarGrid" class="calendar-grid"></div>
+            </div>
+        </div>
+
+        <!-- NUOVA VISTA: GIORNO PER GIORNO (lista verticale con tutti i dipendenti) -->
+        <div id="dayByDayView" style="display: none;">
+            <div class="admin-quick-bar" style="justify-content: flex-start;">
+                <span style="font-weight:600; font-size:0.85rem;">📅 Ordine cronologico</span>
+                <button id="resetDayByDayFilter" class="reset-all-btn" style="background:#eef2f8; color:#2c5a7a;">⟳ Mostra tutti i giorni</button>
+            </div>
+            <div class="day-by-day-panel">
+                <div class="day-list-header">
+                    <div class="day-list-title">🗓️ Elenco giornaliero turni</div>
+                    <div class="day-list-sub">📌 Clicca M/P/X per modificare rapidamente</div>
+                </div>
+                <div id="dayListContainer" class="day-list-scroll"></div>
             </div>
         </div>
 
         <div id="usersManagementView" style="display: none;">
             <div class="users-management">
                 <div class="users-header">
-                    <h3 style="margin:0;">📋 Lista Dipendenti (credenziali incluse)</h3>
+                    <h3 style="margin:0;">📋 Dipendenti e credenziali</h3>
                     <div class="add-user-form">
-                        <input type="text" id="newUserName" placeholder="Nome e cognome" required>
-                        <input type="text" id="newUserId" placeholder="Username (es. luca)" required>
+                        <input type="text" id="newUserName" placeholder="Nome e cognome">
+                        <input type="text" id="newUserId" placeholder="Username">
                         <input type="text" id="newUserPassword" placeholder="Password" value="password123">
                         <button id="addUserBtn">➕ Aggiungi</button>
                     </div>
                 </div>
                 <div id="usersListContainer" class="users-list"></div>
-                <p style="font-size:0.75rem; color:#6c86a0; margin-top:12px;">⚠️ Eliminare un utente cancellerà anche tutti i suoi turni dal database.</p>
+                <p style="font-size:0.7rem; margin-top:8px;">⚠️ Eliminare un utente cancella anche i suoi turni.</p>
             </div>
         </div>
     </div>
@@ -439,7 +483,7 @@
 
     let loggedUser = null;
     let isAdmin = false;
-    let dipendentiList = []; // { id, nome, password }
+    let dipendentiList = [];
     let turniData = {};
     
     let currentUserMonth = new Date().getMonth();
@@ -448,34 +492,27 @@
     let currentAdminYear = new Date().getFullYear();
     let adminFilter = "all";
 
-    // Carica utenti da Firebase con listener in tempo reale
+    // realtime
     function loadUsersRealtime() {
         onValue(usersRef, (snapshot) => {
             if (snapshot.exists()) {
                 const usersObj = snapshot.val();
-                dipendentiList = Object.entries(usersObj).map(([id, data]) => ({
-                    id: id,
-                    nome: data.nome || id,
-                    password: data.password || "password123"
-                }));
+                dipendentiList = Object.entries(usersObj).map(([id, data]) => ({ id, nome: data.nome || id, password: data.password || "password123" }));
             } else {
-                // Inizializza con default se vuoto
                 const defaultUsers = [
                     { id: "alessandro", nome: "Alessandro", password: "alessandro" },
                     { id: "maria", nome: "Maria", password: "maria" },
                     { id: "tiziana", nome: "Tiziana", password: "tiziana" },
                     { id: "rosy", nome: "Rosy", password: "rosy" }
                 ];
-                defaultUsers.forEach(async (u) => {
-                    await set(ref(database, `users/${u.id}`), { nome: u.nome, password: u.password });
-                });
+                defaultUsers.forEach(async (u) => await set(ref(database, `users/${u.id}`), { nome: u.nome, password: u.password }));
                 dipendentiList = defaultUsers;
             }
-            // Aggiorna UI se necessario
             if (isAdmin) {
                 if (document.getElementById("usersManagementView")?.style.display !== "none") renderUsersList();
                 refreshFilterButtons();
                 if (document.getElementById("adminDashboardView")?.style.display !== "none") renderAdminDashboard();
+                if (document.getElementById("dayByDayView")?.style.display !== "none") renderDayByDayList();
             }
         });
     }
@@ -484,14 +521,12 @@
         onValue(turniRef, (snapshot) => {
             if (snapshot.exists()) turniData = snapshot.val();
             else turniData = {};
-            for (let dip of dipendentiList) {
-                if (!turniData[dip.id]) turniData[dip.id] = {};
-            }
-            // Aggiorna viste
+            for (let dip of dipendentiList) if (!turniData[dip.id]) turniData[dip.id] = {};
             if (!isAdmin && loggedUser) renderUserCalendar();
             if (isAdmin) {
                 if (document.getElementById("adminDashboardView")?.style.display !== "none") renderAdminDashboard();
                 else if (document.getElementById("userCalendarView")?.style.display !== "none") renderUserCalendar();
+                else if (document.getElementById("dayByDayView")?.style.display !== "none") renderDayByDayList();
             }
         });
     }
@@ -501,7 +536,7 @@
             const turnoPath = ref(database, `turni/${userId}/${dateKey}`);
             if (turno === "mattina" || turno === "pomeriggio") await set(turnoPath, turno);
             else await remove(turnoPath);
-            showToast(`Turno ${turno || 'rimosso'} salvato su cloud`);
+            showToast(`Turno ${turno || 'rimosso'} · ${userId}`);
             return true;
         } catch(e) { showToast("Errore salvataggio"); return false; }
     }
@@ -509,36 +544,16 @@
     async function addUser(nome, userId, password) {
         if (!nome.trim() || !userId.trim()) { showToast("Inserisci nome e username"); return false; }
         const id = userId.trim().toLowerCase().replace(/\s/g, '_');
-        if (dipendentiList.find(u => u.id === id)) {
-            showToast("Username già esistente");
-            return false;
-        }
-        const newUser = { id, nome: nome.trim(), password: password || "password123" };
-        await set(ref(database, `users/${id}`), { nome: newUser.nome, password: newUser.password });
+        if (dipendentiList.find(u => u.id === id)) { showToast("Username già esistente"); return false; }
+        await set(ref(database, `users/${id}`), { nome: nome.trim(), password: password || "password123" });
         await set(ref(database, `turni/${id}`), {});
-        showToast(`Utente ${nome} aggiunto (username: ${id})`);
+        showToast(`Utente ${nome} aggiunto`);
         return true;
     }
-
-    async function deleteUser(userId) {
-        if (!confirm(`Eliminare ${userId}? Perderà tutti i turni.`)) return;
-        await remove(ref(database, `users/${userId}`));
-        await remove(ref(database, `turni/${userId}`));
-        showToast(`Utente ${userId} eliminato`);
-        if (loggedUser === userId && !isAdmin) logout();
-    }
-
-    async function resetAllTurni() {
-        if (!confirm("Reset totale turni per tutti i dipendenti?")) return;
-        const emptyTurni = {};
-        for (let u of dipendentiList) emptyTurni[u.id] = {};
-        await set(turniRef, emptyTurni);
-        showToast("Turni resettati globalmente");
-    }
-
+    async function deleteUser(userId) { if(!confirm(`Eliminare ${userId}?`)) return; await remove(ref(database, `users/${userId}`)); await remove(ref(database, `turni/${userId}`)); showToast(`Utente ${userId} eliminato`); if(loggedUser === userId && !isAdmin) logout(); }
+    async function resetAllTurni() { if(!confirm("Reset totale turni?")) return; const emptyTurni = {}; for(let u of dipendentiList) emptyTurni[u.id] = {}; await set(turniRef, emptyTurni); showToast("Turni resettati"); }
     function getTurno(userId, dateKey) { return turniData[userId]?.[dateKey] || null; }
     function formatDateKey(date) { return `${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,'0')}-${String(date.getDate()).padStart(2,'0')}`; }
-    
     function getDaysInMonth(year, month) {
         const firstDay = new Date(year, month, 1);
         let startWeekday = firstDay.getDay();
@@ -553,171 +568,157 @@
         return days;
     }
 
-    function renderUserCalendar() {
+    // RENDER GIORNO PER GIORNO (lista con tutti i dipendenti per ogni data del mese corrente)
+    function renderDayByDayList() {
+        const container = document.getElementById("dayListContainer");
+        if (!container || !isAdmin) return;
+        const now = new Date();
+        const year = now.getFullYear();
+        const month = now.getMonth();
+        const daysInMonth = new Date(year, month + 1, 0).getDate();
+        const weekdaysIta = ["Lunedì", "Martedì", "Mercoledì", "Giovedì", "Venerdì", "Sabato", "Domenica"];
+        container.innerHTML = "";
+        for (let d = 1; d <= daysInMonth; d++) {
+            const currentDate = new Date(year, month, d);
+            const dateKey = formatDateKey(currentDate);
+            const weekdayIdx = currentDate.getDay(); // 0 dom
+            let weekdayName = weekdaysIta[weekdayIdx === 0 ? 6 : weekdayIdx - 1];
+            const dayCard = document.createElement("div");
+            dayCard.className = "day-card";
+            dayCard.innerHTML = `
+                <div class="day-card-header">
+                    <div class="day-card-date">${d} ${currentDate.toLocaleString('it', { month: 'long' })}</div>
+                    <div class="day-card-weekday">${weekdayName}</div>
+                </div>
+                <div class="turni-list-by-day" id="day-${dateKey}"></div>
+            `;
+            container.appendChild(dayCard);
+            const turniContainer = dayCard.querySelector(`#day-${dateKey}`);
+            // popola con tutti i dipendenti
+            for (let dip of dipendentiList) {
+                const turno = getTurno(dip.id, dateKey);
+                const row = document.createElement("div");
+                row.className = "turno-row";
+                row.innerHTML = `
+                    <span class="dipendente-name">👤 ${dip.nome}</span>
+                    <span class="turno-badge-sm ${turno === 'mattina' ? 'mattina-badge' : turno === 'pomeriggio' ? 'pomeriggio-badge' : 'nessun-turno'}">${turno ? (turno === 'mattina' ? '🌅 Mattina' : '☀️ Pomeriggio') : '— Libero —'}</span>
+                    <div class="turno-actions">
+                        <button class="action-icon mattina-action" data-user="${dip.id}" data-date="${dateKey}" data-turno="mattina">🌅 M</button>
+                        <button class="action-icon pomeriggio-action" data-user="${dip.id}" data-date="${dateKey}" data-turno="pomeriggio">☀️ P</button>
+                        <button class="action-icon libero-action" data-user="${dip.id}" data-date="${dateKey}" data-turno="libero">✖️ X</button>
+                    </div>
+                `;
+                turniContainer.appendChild(row);
+            }
+            if (dipendentiList.length === 0) turniContainer.innerHTML = '<div class="empty-day-msg">Nessun dipendente registrato</div>';
+        }
+        // attach events (delegation)
+        container.querySelectorAll(".action-icon").forEach(btn => {
+            btn.addEventListener("click", async (e) => {
+                e.stopPropagation();
+                const userId = btn.getAttribute("data-user");
+                const dateKey = btn.getAttribute("data-date");
+                let turnoVal = btn.getAttribute("data-turno");
+                if (turnoVal === "libero") turnoVal = null;
+                await saveTurno(userId, dateKey, turnoVal);
+            });
+        });
+    }
+
+    function renderUserCalendar() { /* mantenuta come originale ma compatta */
         if (!loggedUser || isAdmin) return;
         const grid = document.getElementById("userCalendarGrid");
-        if (!grid) return;
+        if(!grid) return;
         const monthNames = ["Gennaio","Febbraio","Marzo","Aprile","Maggio","Giugno","Luglio","Agosto","Settembre","Ottobre","Novembre","Dicembre"];
         document.getElementById("userMonthYear").innerHTML = `${monthNames[currentUserMonth]} ${currentUserYear}`;
         const days = getDaysInMonth(currentUserYear, currentUserMonth);
         grid.innerHTML = "";
-        for (let dayObj of days) {
-            const date = dayObj.date;
-            const dateKey = formatDateKey(date);
+        for(let dayObj of days){
+            const date = dayObj.date, dateKey = formatDateKey(date);
             const turno = getTurno(loggedUser, dateKey);
             const dayDiv = document.createElement("div"); dayDiv.className = "calendar-day";
-            if (!dayObj.isCurrentMonth) dayDiv.classList.add("other-month");
+            if(!dayObj.isCurrentMonth) dayDiv.classList.add("other-month");
             const numDiv = document.createElement("div"); numDiv.className = "day-number"; numDiv.textContent = date.getDate(); dayDiv.appendChild(numDiv);
             const turnoDiv = document.createElement("div"); turnoDiv.className = `turno-info ${turno === 'mattina' ? 'mattina-badge' : turno === 'pomeriggio' ? 'pomeriggio-badge' : 'nessun-turno'}`;
-            turnoDiv.innerHTML = turno ? (turno === 'mattina' ? '🌅 Mattina' : '☀️ Pomeriggio') : '— non assegnato —';
+            turnoDiv.innerHTML = turno ? (turno === 'mattina' ? '🌅 Mattina' : '☀️ Pomeriggio') : '—';
             dayDiv.appendChild(turnoDiv);
             const btnDiv = document.createElement("div"); btnDiv.className = "edit-buttons";
-            const btnMatt = document.createElement("button"); btnMatt.textContent = "🌅 Mattina"; btnMatt.className = "edit-btn";
-            btnMatt.onclick = async () => { await saveTurno(loggedUser, dateKey, "mattina"); };
-            const btnPom = document.createElement("button"); btnPom.textContent = "☀️ Pomeriggio"; btnPom.className = "edit-btn";
-            btnPom.onclick = async () => { await saveTurno(loggedUser, dateKey, "pomeriggio"); };
-            const btnDel = document.createElement("button"); btnDel.textContent = "✖️ Libero"; btnDel.className = "edit-btn";
-            btnDel.onclick = async () => { await saveTurno(loggedUser, dateKey, null); };
+            const btnMatt = document.createElement("button"); btnMatt.textContent = "🌅 Mattina"; btnMatt.className = "edit-btn"; btnMatt.onclick = async () => await saveTurno(loggedUser, dateKey, "mattina");
+            const btnPom = document.createElement("button"); btnPom.textContent = "☀️ Pomeriggio"; btnPom.className = "edit-btn"; btnPom.onclick = async () => await saveTurno(loggedUser, dateKey, "pomeriggio");
+            const btnDel = document.createElement("button"); btnDel.textContent = "✖️ Libero"; btnDel.className = "edit-btn"; btnDel.onclick = async () => await saveTurno(loggedUser, dateKey, null);
             btnDiv.append(btnMatt, btnPom, btnDel); dayDiv.appendChild(btnDiv); grid.appendChild(dayDiv);
         }
     }
 
     function renderAdminDashboard() {
         const grid = document.getElementById("adminCalendarGrid");
-        if (!grid) return;
+        if(!grid) return;
         const monthNames = ["Gennaio","Febbraio","Marzo","Aprile","Maggio","Giugno","Luglio","Agosto","Settembre","Ottobre","Novembre","Dicembre"];
         document.getElementById("adminMonthYear").innerHTML = `${monthNames[currentAdminMonth]} ${currentAdminYear}`;
         const days = getDaysInMonth(currentAdminYear, currentAdminMonth);
         grid.innerHTML = "";
         const filtered = adminFilter === "all" ? dipendentiList : dipendentiList.filter(d => d.id === adminFilter);
-        for (let dayObj of days) {
-            const date = dayObj.date; const dateKey = formatDateKey(date);
+        for(let dayObj of days){
+            const date = dayObj.date, dateKey = formatDateKey(date);
             const dayDiv = document.createElement("div"); dayDiv.className = "calendar-day";
-            if (!dayObj.isCurrentMonth) dayDiv.classList.add("other-month");
+            if(!dayObj.isCurrentMonth) dayDiv.classList.add("other-month");
             const numDiv = document.createElement("div"); numDiv.className = "day-number"; numDiv.textContent = date.getDate(); dayDiv.appendChild(numDiv);
             const turniContainer = document.createElement("div"); turniContainer.className = "turni-multipli";
-            for (let dip of filtered) {
+            for(let dip of filtered){
                 const turno = getTurno(dip.id, dateKey);
                 const row = document.createElement("div"); row.className = "turno-individuale";
-                row.innerHTML = `<strong style="font-size:0.7rem;">${dip.nome}:</strong> ${turno ? `<span class="${turno === 'mattina' ? 'mattina-badge' : 'pomeriggio-badge'}">${turno === 'mattina' ? '🌅 Mattina' : '☀️ Pomeriggio'}</span>` : '<span style="color:#aaa;">—</span>'}`;
+                row.innerHTML = `<strong style="font-size:0.7rem;">${dip.nome}:</strong> ${turno ? `<span class="${turno === 'mattina' ? 'mattina-badge' : 'pomeriggio-badge'}">${turno === 'mattina' ? '🌅 M' : '☀️ P'}</span>` : '<span style="color:#aaa;">—</span>'}`;
                 const btnGroup = document.createElement("span");
-                const btnM = document.createElement("button"); btnM.textContent = "M"; btnM.className = "edit-admin-btn"; btnM.title = "Mattina";
-                btnM.onclick = async (e) => { e.stopPropagation(); await saveTurno(dip.id, dateKey, "mattina"); };
-                const btnP = document.createElement("button"); btnP.textContent = "P"; btnP.className = "edit-admin-btn"; btnP.title = "Pomeriggio";
-                btnP.onclick = async (e) => { e.stopPropagation(); await saveTurno(dip.id, dateKey, "pomeriggio"); };
-                const btnX = document.createElement("button"); btnX.textContent = "X"; btnX.className = "edit-admin-btn"; btnX.title = "Libero";
-                btnX.onclick = async (e) => { e.stopPropagation(); await saveTurno(dip.id, dateKey, null); };
+                const btnM = document.createElement("button"); btnM.textContent = "M"; btnM.className = "edit-admin-btn"; btnM.onclick = async (e) => { e.stopPropagation(); await saveTurno(dip.id, dateKey, "mattina"); };
+                const btnP = document.createElement("button"); btnP.textContent = "P"; btnP.className = "edit-admin-btn"; btnP.onclick = async (e) => { e.stopPropagation(); await saveTurno(dip.id, dateKey, "pomeriggio"); };
+                const btnX = document.createElement("button"); btnX.textContent = "X"; btnX.className = "edit-admin-btn"; btnX.onclick = async (e) => { e.stopPropagation(); await saveTurno(dip.id, dateKey, null); };
                 btnGroup.append(btnM, btnP, btnX); row.appendChild(btnGroup); turniContainer.appendChild(row);
             }
             dayDiv.appendChild(turniContainer); grid.appendChild(dayDiv);
         }
     }
 
-    function renderUsersList() {
-        const container = document.getElementById("usersListContainer");
-        if (!container) return;
-        container.innerHTML = "";
-        for (let u of dipendentiList) {
-            const card = document.createElement("div"); card.className = "user-card";
-            card.innerHTML = `<span>👤 <strong>${u.nome}</strong> (${u.id})<br><span style="font-size:0.65rem;">🔑 pwd: ${u.password}</span></span>`;
-            const delBtn = document.createElement("button"); delBtn.textContent = "Elimina"; delBtn.className = "delete-user-btn";
-            delBtn.onclick = () => deleteUser(u.id);
-            card.appendChild(delBtn);
-            container.appendChild(card);
-        }
-    }
-
-    function refreshFilterButtons() {
-        const container = document.getElementById("adminFilterContainer");
-        if (!container) return;
-        container.innerHTML = `<button data-filter="all" class="dip-filter-btn ${adminFilter === 'all' ? 'active' : ''}">📋 Tutti</button>`;
-        for (let u of dipendentiList) {
-            const btn = document.createElement("button");
-            btn.textContent = u.nome;
-            btn.className = `dip-filter-btn ${adminFilter === u.id ? 'active' : ''}`;
-            btn.setAttribute("data-filter", u.id);
-            btn.onclick = () => {
-                document.querySelectorAll("#adminFilterContainer .dip-filter-btn").forEach(b => b.classList.remove("active"));
-                btn.classList.add("active");
-                adminFilter = u.id;
-                renderAdminDashboard();
-            };
-            container.appendChild(btn);
-        }
-        const allBtn = container.querySelector('[data-filter="all"]');
-        if (allBtn) allBtn.onclick = () => {
-            document.querySelectorAll("#adminFilterContainer .dip-filter-btn").forEach(b => b.classList.remove("active"));
-            allBtn.classList.add("active");
-            adminFilter = "all";
-            renderAdminDashboard();
-        };
-    }
+    function renderUsersList() { const c = document.getElementById("usersListContainer"); if(!c) return; c.innerHTML = ""; for(let u of dipendentiList){ const card = document.createElement("div"); card.className="user-card"; card.innerHTML = `<span>👤 <strong>${u.nome}</strong> (${u.id})<br><span style="font-size:0.6rem;">🔑 ${u.password}</span></span>`; const delBtn = document.createElement("button"); delBtn.textContent="Elimina"; delBtn.className="delete-user-btn"; delBtn.onclick = () => deleteUser(u.id); card.appendChild(delBtn); c.appendChild(card); } }
+    function refreshFilterButtons() { const container = document.getElementById("adminFilterContainer"); if(!container) return; container.innerHTML = `<button data-filter="all" class="dip-filter-btn ${adminFilter === 'all' ? 'active' : ''}">📋 Tutti</button>`; for(let u of dipendentiList){ const btn = document.createElement("button"); btn.textContent = u.nome; btn.className = `dip-filter-btn ${adminFilter === u.id ? 'active' : ''}`; btn.onclick = () => { adminFilter = u.id; refreshFilterButtons(); renderAdminDashboard(); }; container.appendChild(btn); } const allBtn = container.querySelector('[data-filter="all"]'); if(allBtn) allBtn.onclick = () => { adminFilter = "all"; refreshFilterButtons(); renderAdminDashboard(); }; }
 
     async function login(username, pwd) {
-        if (username === "admin" && pwd === "admin123") {
-            isAdmin = true; loggedUser = "admin";
-            document.getElementById("loginSection").style.display = "none";
-            document.getElementById("mainSection").style.display = "block";
-            document.getElementById("adminTabs").style.display = "flex";
-            document.getElementById("userCalendarView").style.display = "block";
-            document.getElementById("adminDashboardView").style.display = "none";
-            document.getElementById("usersManagementView").style.display = "none";
-            document.getElementById("loggedUserSpan").innerHTML = "👑 Admin";
-            document.getElementById("mainTitle").innerHTML = "👑 Pannello Admin";
-            renderUserCalendar();
-            refreshFilterButtons();
-            showToast("Admin connesso - Dati in tempo reale");
-            return true;
+        if(username === "admin" && pwd === "admin123"){ isAdmin=true; loggedUser="admin";
+            document.getElementById("loginSection").style.display="none"; document.getElementById("mainSection").style.display="block";
+            document.getElementById("adminTabs").style.display="flex"; document.getElementById("userCalendarView").style.display="block";
+            document.getElementById("adminDashboardView").style.display="none"; document.getElementById("dayByDayView").style.display="none";
+            document.getElementById("usersManagementView").style.display="none"; document.getElementById("loggedUserSpan").innerHTML="👑 Admin";
+            document.getElementById("mainTitle").innerHTML="👑 Pannello Admin"; renderUserCalendar(); refreshFilterButtons(); showToast("Admin connesso"); return true;
         }
         const user = dipendentiList.find(u => u.id === username && u.password === pwd);
-        if (user) {
-            isAdmin = false; loggedUser = user.id;
-            document.getElementById("loginSection").style.display = "none";
-            document.getElementById("mainSection").style.display = "block";
-            document.getElementById("adminTabs").style.display = "none";
-            document.getElementById("userCalendarView").style.display = "block";
-            document.getElementById("loggedUserSpan").innerHTML = `👤 ${user.nome}`;
-            document.getElementById("mainTitle").innerHTML = "📅 Il mio Calendario";
-            renderUserCalendar();
-            showToast(`Benvenuto ${user.nome}`);
-            return true;
+        if(user){ isAdmin=false; loggedUser=user.id;
+            document.getElementById("loginSection").style.display="none"; document.getElementById("mainSection").style.display="block";
+            document.getElementById("adminTabs").style.display="none"; document.getElementById("userCalendarView").style.display="block";
+            document.getElementById("loggedUserSpan").innerHTML=`👤 ${user.nome}`; document.getElementById("mainTitle").innerHTML="📅 Il mio Calendario";
+            renderUserCalendar(); showToast(`Benvenuto ${user.nome}`); return true;
         }
-        showToast("Credenziali errate");
-        return false;
+        showToast("Credenziali errate"); return false;
     }
+    function logout(){ loggedUser=null; isAdmin=false; document.getElementById("loginSection").style.display="block"; document.getElementById("mainSection").style.display="none"; showToast("Logout"); }
+    function showToast(msg){ const t = document.getElementById("toastMsg"); t.style.opacity="1"; t.innerText=msg; if(window.tt) clearTimeout(window.tt); window.tt = setTimeout(()=>t.style.opacity="0", 2000); }
 
-    function logout() { loggedUser = null; isAdmin = false; document.getElementById("loginSection").style.display = "block"; document.getElementById("mainSection").style.display = "none"; showToast("Logout"); }
-
-    function showToast(msg) { const t = document.getElementById("toastMsg"); t.style.opacity = "1"; t.innerText = msg; if(window.tt) clearTimeout(window.tt); window.tt = setTimeout(() => t.style.opacity = "0", 2000); }
-
-    function bindEvents() {
+    function bindEvents(){
         document.getElementById("loginBtnMain").onclick = () => login(document.getElementById("loginUsername").value.trim(), document.getElementById("loginPassword").value);
         document.getElementById("logoutBtnMain").onclick = logout;
         document.getElementById("userPrevMonth").onclick = () => { currentUserMonth--; if(currentUserMonth<0){currentUserMonth=11;currentUserYear--;} renderUserCalendar(); };
         document.getElementById("userNextMonth").onclick = () => { currentUserMonth++; if(currentUserMonth>11){currentUserMonth=0;currentUserYear++;} renderUserCalendar(); };
         document.getElementById("adminPrevMonth").onclick = () => { currentAdminMonth--; if(currentAdminMonth<0){currentAdminMonth=11;currentAdminYear--;} if(isAdmin && document.getElementById("adminDashboardView").style.display !== "none") renderAdminDashboard(); };
         document.getElementById("adminNextMonth").onclick = () => { currentAdminMonth++; if(currentAdminMonth>11){currentAdminMonth=0;currentAdminYear++;} if(isAdmin && document.getElementById("adminDashboardView").style.display !== "none") renderAdminDashboard(); };
-        document.getElementById("tabDipendentiView").onclick = () => { document.getElementById("userCalendarView").style.display = "block"; document.getElementById("adminDashboardView").style.display = "none"; document.getElementById("usersManagementView").style.display = "none"; renderUserCalendar(); setActiveTab("tabDipendentiView"); };
-        document.getElementById("tabAdminDashboard").onclick = () => { document.getElementById("userCalendarView").style.display = "none"; document.getElementById("adminDashboardView").style.display = "block"; document.getElementById("usersManagementView").style.display = "none"; renderAdminDashboard(); setActiveTab("tabAdminDashboard"); };
-        document.getElementById("tabUsersManagement").onclick = () => { document.getElementById("userCalendarView").style.display = "none"; document.getElementById("adminDashboardView").style.display = "none"; document.getElementById("usersManagementView").style.display = "block"; renderUsersList(); setActiveTab("tabUsersManagement"); };
+        document.getElementById("tabDipendentiView").onclick = () => { showAdminSection("userCalendarView"); setActiveTab("tabDipendentiView"); renderUserCalendar(); };
+        document.getElementById("tabAdminDashboard").onclick = () => { showAdminSection("adminDashboardView"); setActiveTab("tabAdminDashboard"); renderAdminDashboard(); };
+        document.getElementById("tabDayByDayView").onclick = () => { showAdminSection("dayByDayView"); setActiveTab("tabDayByDayView"); renderDayByDayList(); };
+        document.getElementById("tabUsersManagement").onclick = () => { showAdminSection("usersManagementView"); setActiveTab("tabUsersManagement"); renderUsersList(); };
         document.getElementById("adminResetAllBtn").onclick = resetAllTurni;
         document.getElementById("addUserBtn").onclick = () => addUser(document.getElementById("newUserName").value, document.getElementById("newUserId").value, document.getElementById("newUserPassword").value);
-        function setActiveTab(activeId) {
-            ["tabDipendentiView","tabAdminDashboard","tabUsersManagement"].forEach(id => {
-                const btn = document.getElementById(id);
-                if(btn) btn.classList.remove("active");
-            });
-            document.getElementById(activeId).classList.add("active");
-        }
+        document.getElementById("resetDayByDayFilter")?.addEventListener("click", () => renderDayByDayList());
+        function showAdminSection(sectionId){ document.getElementById("userCalendarView").style.display="none"; document.getElementById("adminDashboardView").style.display="none"; document.getElementById("dayByDayView").style.display="none"; document.getElementById("usersManagementView").style.display="none"; document.getElementById(sectionId).style.display="block"; }
+        function setActiveTab(activeId){ ["tabDipendentiView","tabAdminDashboard","tabDayByDayView","tabUsersManagement"].forEach(id=>{ const btn = document.getElementById(id); if(btn) btn.classList.remove("active"); }); document.getElementById(activeId)?.classList.add("active"); }
     }
-
-    function init() {
-        bindEvents();
-        loadUsersRealtime();
-        loadTurniRealtime();
-        document.getElementById("loginSection").style.display = "block";
-        document.getElementById("mainSection").style.display = "none";
-    }
+    function init(){ bindEvents(); loadUsersRealtime(); loadTurniRealtime(); document.getElementById("loginSection").style.display="block"; document.getElementById("mainSection").style.display="none"; }
     init();
 </script>
 </body>
