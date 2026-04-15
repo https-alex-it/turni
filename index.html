@@ -14,18 +14,18 @@
             background: linear-gradient(135deg, #e0eafc 0%, #cfdef3 100%);
             margin: 0;
             min-height: 100vh;
-            padding: 16px 12px;
+            padding: 12px;
         }
 
         .app-wrapper {
             max-width: 1400px;
             width: 100%;
             margin: 0 auto;
-            background: rgba(255,255,255,0.85);
+            background: rgba(255,255,255,0.92);
             backdrop-filter: blur(4px);
-            border-radius: 2rem;
+            border-radius: 1.5rem;
             box-shadow: 0 25px 45px -12px rgba(0,0,0,0.3);
-            padding: 1.2rem 1rem 1.8rem;
+            padding: 1rem;
             transition: all 0.2s;
         }
 
@@ -35,12 +35,12 @@
             align-items: center;
             flex-wrap: wrap;
             gap: 12px;
-            margin-bottom: 1.2rem;
+            margin-bottom: 1rem;
             border-bottom: 2px solid #ffffffcc;
             padding-bottom: 0.7rem;
         }
         h1 {
-            font-size: 1.5rem;
+            font-size: 1.4rem;
             font-weight: 700;
             margin: 0;
             background: linear-gradient(145deg, #1f4870, #0f2c42);
@@ -56,8 +56,17 @@
             align-items: center;
             gap: 12px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            flex-wrap: wrap;
         }
-        .user-info { font-weight: 600; color: #1e4a76; font-size: 0.9rem; }
+        .user-info { font-weight: 600; color: #1e4a76; font-size: 0.85rem; }
+        .readonly-badge {
+            background: #f0e6d2;
+            color: #b45f1b;
+            font-size: 0.7rem;
+            padding: 2px 8px;
+            border-radius: 40px;
+            font-weight: 500;
+        }
         .logout-btn, .switch-btn {
             background: #eef2f8;
             border: none;
@@ -72,7 +81,7 @@
         .view-tabs {
             display: flex;
             gap: 8px;
-            margin-bottom: 1.5rem;
+            margin-bottom: 1.2rem;
             border-bottom: 2px solid #cbdbe280;
             padding-bottom: 0.5rem;
             flex-wrap: wrap;
@@ -81,7 +90,7 @@
             background: none;
             border: none;
             padding: 8px 18px;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             font-weight: 600;
             cursor: pointer;
             border-radius: 40px;
@@ -95,8 +104,8 @@
 
         .calendar-container {
             background: white;
-            border-radius: 1.5rem;
-            padding: 1rem;
+            border-radius: 1.2rem;
+            padding: 0.8rem;
             box-shadow: 0 8px 20px rgba(0,0,0,0.08);
             margin-bottom: 1rem;
             overflow-x: auto;
@@ -105,11 +114,11 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 1.2rem;
+            margin-bottom: 1rem;
             flex-wrap: wrap;
             gap: 8px;
         }
-        .month-year { font-size: 1.4rem; font-weight: 700; color: #2c5a7a; }
+        .month-year { font-size: 1.2rem; font-weight: 700; color: #2c5a7a; }
         .nav-btn {
             background: #eef3fc;
             border: none;
@@ -124,10 +133,10 @@
             text-align: center;
             font-weight: 700;
             color: #3a6b92;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             gap: 4px;
         }
-        .weekday { padding: 8px 0; background: #f0f5fb; border-radius: 40px; font-size: 0.8rem; }
+        .weekday { padding: 6px 0; background: #f0f5fb; border-radius: 40px; font-size: 0.75rem; }
         .calendar-grid {
             display: grid;
             grid-template-columns: repeat(7, 1fr);
@@ -135,9 +144,9 @@
         }
         .calendar-day {
             background: #fefefe;
-            border-radius: 1rem;
+            border-radius: 0.8rem;
             padding: 6px 4px;
-            min-height: 100px;
+            min-height: 95px;
             border: 1px solid #e2edf7;
             display: flex;
             flex-direction: column;
@@ -148,7 +157,7 @@
         .calendar-day.past-date { background: #f2f4f8; opacity: 0.7; border-color: #ddd; }
         .day-number {
             font-weight: 700;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             background: #eef2f7;
             width: 28px;
             height: 28px;
@@ -177,13 +186,18 @@
             font-size: 0.65rem;
             cursor: pointer;
         }
+        .edit-btn.disabled, .edit-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            background: #e0e0e0;
+        }
         
         /* VISTA GIORNO PER GIORNO (solo futuro) */
         .day-by-day-panel {
             background: white;
-            border-radius: 1.5rem;
+            border-radius: 1.2rem;
             padding: 0.8rem;
-            margin-top: 0.8rem;
+            margin-top: 0.5rem;
         }
         .day-list-header {
             display: flex;
@@ -192,11 +206,11 @@
             flex-wrap: wrap;
             margin-bottom: 1rem;
             gap: 8px;
-            padding: 0 6px;
+            padding: 0 4px;
         }
         .day-list-title {
             font-weight: 700;
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             color: #1f4870;
         }
         .day-list-sub {
@@ -213,10 +227,10 @@
         }
         .day-card {
             background: #f9fcff;
-            border-radius: 1.2rem;
+            border-radius: 1rem;
             margin-bottom: 12px;
-            padding: 12px 14px;
-            border-left: 5px solid #2c5a7a;
+            padding: 10px 12px;
+            border-left: 4px solid #2c5a7a;
             box-shadow: 0 2px 6px rgba(0,0,0,0.03);
         }
         .day-card-header {
@@ -225,20 +239,20 @@
             align-items: center;
             flex-wrap: wrap;
             gap: 8px;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             border-bottom: 1px dashed #cbdde9;
             padding-bottom: 6px;
         }
         .day-card-date {
             font-weight: 800;
-            font-size: 1rem;
+            font-size: 0.95rem;
             background: #e6f0f9;
             padding: 4px 12px;
             border-radius: 40px;
             color: #1f4870;
         }
         .day-card-weekday {
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             color: #5c7f9c;
         }
         .turni-list-by-day {
@@ -284,6 +298,7 @@
         .action-icon.mattina-action { background: #ffe0b5; color: #a05313; }
         .action-icon.pomeriggio-action { background: #cae9fc; color: #146b8a; }
         .action-icon.libero-action { background: #f0f0f0; color: #6c6f78; }
+        .action-icon.disabled, .action-icon:disabled { opacity: 0.5; cursor: not-allowed; }
         .empty-day-msg {
             text-align: center;
             color: #94a9c2;
@@ -295,9 +310,9 @@
         }
         .admin-quick-bar {
             background: white;
-            border-radius: 1.5rem;
-            padding: 0.8rem 1rem;
-            margin-bottom: 1.2rem;
+            border-radius: 1.2rem;
+            padding: 0.8rem;
+            margin-bottom: 1rem;
             display: flex;
             flex-wrap: wrap;
             gap: 12px;
@@ -312,10 +327,10 @@
         .dip-filter-btn {
             background: #eef2f8;
             border: none;
-            padding: 6px 14px;
+            padding: 5px 12px;
             border-radius: 40px;
             cursor: pointer;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
         }
         .dip-filter-btn.active { background: #2c5a7a; color: white; }
         .reset-all-btn {
@@ -327,35 +342,44 @@
             cursor: pointer;
             font-size: 0.75rem;
         }
-        .users-management { background: white; border-radius: 1.5rem; padding: 1rem; margin-bottom: 1rem; }
+        .users-management { background: white; border-radius: 1.2rem; padding: 1rem; margin-bottom: 1rem; }
         .users-header { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; margin-bottom: 1rem; align-items: center; }
         .add-user-form { display: flex; gap: 8px; flex-wrap: wrap; }
-        .add-user-form input { padding: 8px 12px; border-radius: 40px; border: 1px solid #ccc; font-size: 0.8rem; }
-        .add-user-form button { background: #2c5a7a; color: white; border: none; padding: 8px 18px; border-radius: 40px; cursor: pointer; }
-        .users-list { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
-        .user-card { background: #f0f5fb; border-radius: 60px; padding: 6px 14px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
-        .delete-user-btn { background: #ffe2e2; border: none; border-radius: 30px; padding: 3px 10px; color: #b13e3e; cursor: pointer; font-size: 0.7rem; }
-        .info-footer { background: #ffffffcc; border-radius: 1.2rem; padding: 0.6rem 1rem; font-size: 0.7rem; display: flex; justify-content: space-between; flex-wrap: wrap; }
+        .add-user-form input { padding: 8px 12px; border-radius: 40px; border: 1px solid #ccc; font-size: 0.75rem; flex: 1 0 auto; }
+        .add-user-form button { background: #2c5a7a; color: white; border: none; padding: 8px 18px; border-radius: 40px; cursor: pointer; font-size: 0.8rem; }
+        .users-list { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 12px; }
+        .user-card { background: #f0f5fb; border-radius: 1rem; padding: 12px; width: 100%; max-width: 320px; display: flex; flex-direction: column; gap: 8px; }
+        .user-card-header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; }
+        .user-card span { font-size: 0.85rem; font-weight: 600; }
+        .user-passwords { display: flex; flex-direction: column; gap: 6px; font-size: 0.7rem; background: white; border-radius: 1rem; padding: 8px; }
+        .ro-pwd-edit { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; margin-top: 4px; }
+        .ro-pwd-edit input { padding: 4px 8px; border-radius: 30px; border: 1px solid #ccc; font-size: 0.7rem; flex: 1; }
+        .update-ro-btn { background: #eef2f8; border: none; padding: 4px 10px; border-radius: 30px; font-size: 0.7rem; cursor: pointer; }
+        .delete-user-btn { background: #ffe2e2; border: none; border-radius: 30px; padding: 5px 10px; color: #b13e3e; cursor: pointer; font-size: 0.7rem; width: fit-content; }
+        .info-footer { background: #ffffffcc; border-radius: 1rem; padding: 0.5rem 0.8rem; font-size: 0.7rem; display: flex; justify-content: space-between; flex-wrap: wrap; }
         .legend { display: flex; gap: 16px; flex-wrap: wrap; }
         .toast-msg { position: fixed; bottom: 20px; right: 20px; background: #1f4870; color: white; padding: 10px 18px; border-radius: 60px; z-index: 1000; opacity: 0; transition: opacity 0.2s; pointer-events: none; font-size: 0.8rem; }
-        .disabled-date {
-            background: #e9ecef;
-            color: #8a9bb0;
-        }
+        .turno-individuale { font-size: 0.7rem; display: flex; justify-content: space-between; align-items: center; gap: 6px; flex-wrap: wrap; margin: 2px 0; }
+        .edit-admin-btn { background: #eef2f8; border: none; border-radius: 20px; padding: 2px 8px; margin: 0 2px; font-size: 0.65rem; cursor: pointer; }
+        .turni-multipli { width: 100%; max-height: 110px; overflow-y: auto; }
         @media (max-width: 680px) {
-            body { padding: 12px 8px; }
-            .app-wrapper { padding: 1rem; }
-            .calendar-day { min-height: 85px; }
-            .weekday { font-size: 0.7rem; padding: 5px 0; }
-            .day-number { width: 24px; height: 24px; font-size: 0.8rem; }
+            body { padding: 8px; }
+            .app-wrapper { padding: 0.8rem; }
+            .calendar-day { min-height: 80px; }
+            .weekday { font-size: 0.65rem; padding: 4px 0; }
+            .day-number { width: 24px; height: 24px; font-size: 0.75rem; }
             .turno-row { flex-direction: column; align-items: flex-start; }
             .dipendente-name { min-width: auto; }
             .turno-actions { margin-left: auto; }
             .day-card-header { flex-direction: column; align-items: flex-start; }
+            .edit-admin-btn { padding: 2px 6px; font-size: 0.6rem; }
+            .calendar-grid { gap: 4px; }
         }
         @media (max-width: 480px) {
             .edit-buttons button { font-size: 0.6rem; padding: 2px 6px; }
             .turno-badge-sm { font-size: 0.65rem; }
+            .day-card-date { font-size: 0.8rem; }
+            .action-icon { padding: 3px 8px; font-size: 0.65rem; }
         }
     </style>
     <script type="importmap">
@@ -391,13 +415,11 @@
         </div>
 
         <div id="adminTabs" class="view-tabs" style="display: none;">
-            <!-- Vista Dipendenti rimossa per admin -->
             <button id="tabAdminDashboard" class="tab-btn active">📊 Calendario Settimanale</button>
             <button id="tabDayByDayView" class="tab-btn">📋 Giorno per Giorno</button>
             <button id="tabUsersManagement" class="tab-btn">👤 Gestione Utenti</button>
         </div>
 
-        <!-- Vista calendario per dipendente normale (non admin) -->
         <div id="userCalendarView">
             <div class="calendar-container">
                 <div class="calendar-nav">
@@ -411,7 +433,6 @@
             <div class="info-footer"><div class="legend">🌅 Mattina &nbsp; ☀️ Pomeriggio</div><div>✅ Cloud real-time</div></div>
         </div>
 
-        <!-- Admin: Calendario generale (solo giorni >= oggi) -->
         <div id="adminDashboardView" style="display: none;">
             <div class="admin-quick-bar">
                 <div class="dip-filter" id="adminFilterContainer"></div>
@@ -428,10 +449,9 @@
             </div>
         </div>
 
-        <!-- VISTA GIORNO PER GIORNO (solo da oggi in poi) -->
         <div id="dayByDayView" style="display: none;">
             <div class="admin-quick-bar" style="justify-content: flex-start;">
-                <span style="font-weight:600; font-size:0.85rem;">📅 Solo giorni da oggi in avanti</span>
+                <span style="font-weight:600; font-size:0.8rem;">📅 Solo giorni da oggi in avanti</span>
                 <button id="resetDayByDayFilter" class="reset-all-btn" style="background:#eef2f8; color:#2c5a7a;">⟳ Aggiorna</button>
             </div>
             <div class="day-by-day-panel">
@@ -451,11 +471,12 @@
                         <input type="text" id="newUserName" placeholder="Nome e cognome">
                         <input type="text" id="newUserId" placeholder="Username">
                         <input type="text" id="newUserPassword" placeholder="Password" value="password123">
+                        <input type="text" id="newUserReadonlyPwd" placeholder="Password sola lettura" value="readonly">
                         <button id="addUserBtn">➕ Aggiungi</button>
                     </div>
                 </div>
                 <div id="usersListContainer" class="users-list"></div>
-                <p style="font-size:0.7rem; margin-top:8px;">⚠️ Eliminare un utente cancella anche i suoi turni.</p>
+                <p style="font-size:0.7rem; margin-top:8px;">⚠️ Eliminare un utente cancella anche i suoi turni. Ogni utente ha una password "modifica" e una "sola lettura".</p>
             </div>
         </div>
     </div>
@@ -485,6 +506,7 @@
 
     let loggedUser = null;
     let isAdmin = false;
+    let readOnlyMode = false;
     let dipendentiList = [];
     let turniData = {};
     
@@ -494,7 +516,6 @@
     let currentAdminYear = new Date().getFullYear();
     let adminFilter = "all";
 
-    // Helper: data odierna (inizio giornata)
     const today = new Date();
     today.setHours(0, 0, 0, 0);
     function isDateInFutureOrToday(date) {
@@ -503,26 +524,46 @@
         return d >= today;
     }
 
+    async function setDefaultReadonlyPasswordIfMissing() {
+        for(let u of dipendentiList) {
+            if(!u.readonlyPassword) {
+                const defaultRo = `ro_${u.id}`;
+                await set(ref(database, `users/${u.id}/readonlyPassword`), defaultRo);
+                u.readonlyPassword = defaultRo;
+            }
+        }
+    }
+
     function loadUsersRealtime() {
-        onValue(usersRef, (snapshot) => {
+        onValue(usersRef, async (snapshot) => {
             if (snapshot.exists()) {
                 const usersObj = snapshot.val();
-                dipendentiList = Object.entries(usersObj).map(([id, data]) => ({ id, nome: data.nome || id, password: data.password || "password123" }));
+                dipendentiList = Object.entries(usersObj).map(([id, data]) => ({ 
+                    id, 
+                    nome: data.nome || id, 
+                    password: data.password || "password123",
+                    readonlyPassword: data.readonlyPassword || null
+                }));
             } else {
                 const defaultUsers = [
-                    { id: "alessandro", nome: "Alessandro", password: "alessandro" },
-                    { id: "maria", nome: "Maria", password: "maria" },
-                    { id: "tiziana", nome: "Tiziana", password: "tiziana" },
-                    { id: "rosy", nome: "Rosy", password: "rosy" }
+                    { id: "alessandro", nome: "Alessandro", password: "alessandro", readonlyPassword: "readonly_alessandro" },
+                    { id: "maria", nome: "Maria", password: "maria", readonlyPassword: "readonly_maria" },
+                    { id: "tiziana", nome: "Tiziana", password: "tiziana", readonlyPassword: "readonly_tiziana" },
+                    { id: "rosy", nome: "Rosy", password: "rosy", readonlyPassword: "readonly_rosy" }
                 ];
-                defaultUsers.forEach(async (u) => await set(ref(database, `users/${u.id}`), { nome: u.nome, password: u.password }));
+                for(let u of defaultUsers) {
+                    await set(ref(database, `users/${u.id}`), { nome: u.nome, password: u.password, readonlyPassword: u.readonlyPassword });
+                }
                 dipendentiList = defaultUsers;
             }
+            await setDefaultReadonlyPasswordIfMissing();
             if (isAdmin) {
                 if (document.getElementById("usersManagementView")?.style.display !== "none") renderUsersList();
                 refreshFilterButtons();
                 if (document.getElementById("adminDashboardView")?.style.display !== "none") renderAdminDashboard();
                 if (document.getElementById("dayByDayView")?.style.display !== "none") renderDayByDayList();
+            } else if(loggedUser && !isAdmin) {
+                renderUserCalendar();
             }
         });
     }
@@ -535,13 +576,14 @@
             if (!isAdmin && loggedUser) renderUserCalendar();
             if (isAdmin) {
                 if (document.getElementById("adminDashboardView")?.style.display !== "none") renderAdminDashboard();
-                else if (document.getElementById("userCalendarView")?.style.display !== "none") renderUserCalendar();
                 else if (document.getElementById("dayByDayView")?.style.display !== "none") renderDayByDayList();
+                else if (document.getElementById("userCalendarView")?.style.display !== "none") renderUserCalendar();
             }
         });
     }
 
     async function saveTurno(userId, dateKey, turno) {
+        if(readOnlyMode && !isAdmin) { showToast("Modalità sola lettura: non puoi modificare"); return false; }
         try {
             const turnoPath = ref(database, `turni/${userId}/${dateKey}`);
             if (turno === "mattina" || turno === "pomeriggio") await set(turnoPath, turno);
@@ -551,15 +593,27 @@
         } catch(e) { showToast("Errore salvataggio"); return false; }
     }
 
-    async function addUser(nome, userId, password) {
+    async function addUser(nome, userId, password, readonlyPwd) {
         if (!nome.trim() || !userId.trim()) { showToast("Inserisci nome e username"); return false; }
         const id = userId.trim().toLowerCase().replace(/\s/g, '_');
         if (dipendentiList.find(u => u.id === id)) { showToast("Username già esistente"); return false; }
-        await set(ref(database, `users/${id}`), { nome: nome.trim(), password: password || "password123" });
+        await set(ref(database, `users/${id}`), { 
+            nome: nome.trim(), 
+            password: password || "password123",
+            readonlyPassword: readonlyPwd || "readonly"
+        });
         await set(ref(database, `turni/${id}`), {});
         showToast(`Utente ${nome} aggiunto`);
         return true;
     }
+    
+    async function updateReadonlyPassword(userId, newRoPwd) {
+        if(!newRoPwd.trim()) { showToast("Password non valida"); return; }
+        await set(ref(database, `users/${userId}/readonlyPassword`), newRoPwd.trim());
+        showToast(`Password RO aggiornata per ${userId}`);
+        if(isAdmin) renderUsersList();
+    }
+
     async function deleteUser(userId) { if(!confirm(`Eliminare ${userId}?`)) return; await remove(ref(database, `users/${userId}`)); await remove(ref(database, `turni/${userId}`)); showToast(`Utente ${userId} eliminato`); if(loggedUser === userId && !isAdmin) logout(); }
     async function resetAllTurni() { if(!confirm("Reset totale turni?")) return; const emptyTurni = {}; for(let u of dipendentiList) emptyTurni[u.id] = {}; await set(turniRef, emptyTurni); showToast("Turni resettati"); }
     function getTurno(userId, dateKey) { return turniData[userId]?.[dateKey] || null; }
@@ -578,7 +632,6 @@
         return days;
     }
 
-    // RENDER GIORNO PER GIORNO (SOLO DA OGGI IN POI)
     function renderDayByDayList() {
         const container = document.getElementById("dayListContainer");
         if (!container || !isAdmin) return;
@@ -590,7 +643,7 @@
         container.innerHTML = "";
         for (let d = 1; d <= daysInMonth; d++) {
             const currentDate = new Date(year, month, d);
-            if (!isDateInFutureOrToday(currentDate)) continue; // solo oggi e futuro
+            if (!isDateInFutureOrToday(currentDate)) continue;
             const dateKey = formatDateKey(currentDate);
             const weekdayIdx = currentDate.getDay();
             let weekdayName = weekdaysIta[weekdayIdx === 0 ? 6 : weekdayIdx - 1];
@@ -625,6 +678,7 @@
         container.querySelectorAll(".action-icon").forEach(btn => {
             btn.addEventListener("click", async (e) => {
                 e.stopPropagation();
+                if(!isAdmin) return;
                 const userId = btn.getAttribute("data-user");
                 const dateKey = btn.getAttribute("data-date");
                 let turnoVal = btn.getAttribute("data-turno");
@@ -652,9 +706,18 @@
             turnoDiv.innerHTML = turno ? (turno === 'mattina' ? '🌅 Mattina' : '☀️ Pomeriggio') : '—';
             dayDiv.appendChild(turnoDiv);
             const btnDiv = document.createElement("div"); btnDiv.className = "edit-buttons";
-            const btnMatt = document.createElement("button"); btnMatt.textContent = "🌅 Mattina"; btnMatt.className = "edit-btn"; btnMatt.onclick = async () => await saveTurno(loggedUser, dateKey, "mattina");
-            const btnPom = document.createElement("button"); btnPom.textContent = "☀️ Pomeriggio"; btnPom.className = "edit-btn"; btnPom.onclick = async () => await saveTurno(loggedUser, dateKey, "pomeriggio");
-            const btnDel = document.createElement("button"); btnDel.textContent = "✖️ Libero"; btnDel.className = "edit-btn"; btnDel.onclick = async () => await saveTurno(loggedUser, dateKey, null);
+            const btnMatt = document.createElement("button"); btnMatt.textContent = "🌅 Mattina"; btnMatt.className = "edit-btn"; 
+            const btnPom = document.createElement("button"); btnPom.textContent = "☀️ Pomeriggio"; btnPom.className = "edit-btn";
+            const btnDel = document.createElement("button"); btnDel.textContent = "✖️ Libero"; btnDel.className = "edit-btn";
+            if(readOnlyMode) {
+                btnMatt.disabled = true; btnMatt.classList.add("disabled");
+                btnPom.disabled = true; btnPom.classList.add("disabled");
+                btnDel.disabled = true; btnDel.classList.add("disabled");
+            } else {
+                btnMatt.onclick = async () => await saveTurno(loggedUser, dateKey, "mattina");
+                btnPom.onclick = async () => await saveTurno(loggedUser, dateKey, "pomeriggio");
+                btnDel.onclick = async () => await saveTurno(loggedUser, dateKey, null);
+            }
             btnDiv.append(btnMatt, btnPom, btnDel); dayDiv.appendChild(btnDiv); grid.appendChild(dayDiv);
         }
     }
@@ -678,7 +741,7 @@
             for(let dip of filtered){
                 const turno = getTurno(dip.id, dateKey);
                 const row = document.createElement("div"); row.className = "turno-individuale";
-                row.innerHTML = `<strong style="font-size:0.7rem;">${dip.nome}:</strong> ${turno ? `<span class="${turno === 'mattina' ? 'mattina-badge' : 'pomeriggio-badge'}">${turno === 'mattina' ? '🌅 M' : '☀️ P'}</span>` : '<span style="color:#aaa;">—</span>'}`;
+                row.innerHTML = `<strong style="font-size:0.7rem;">${dip.nome}:</strong> ${turno ? `<span class="${turno === 'mattina' ? 'mattina-badge' : 'pomeriggio-badge'}" style="padding:2px 6px; border-radius:20px;">${turno === 'mattina' ? '🌅 M' : '☀️ P'}</span>` : '<span style="color:#aaa;">—</span>'}`;
                 if(!isPast){
                     const btnGroup = document.createElement("span");
                     const btnM = document.createElement("button"); btnM.textContent = "M"; btnM.className = "edit-admin-btn"; btnM.onclick = async (e) => { e.stopPropagation(); await saveTurno(dip.id, dateKey, "mattina"); };
@@ -692,27 +755,66 @@
         }
     }
 
-    function renderUsersList() { const c = document.getElementById("usersListContainer"); if(!c) return; c.innerHTML = ""; for(let u of dipendentiList){ const card = document.createElement("div"); card.className="user-card"; card.innerHTML = `<span>👤 <strong>${u.nome}</strong> (${u.id})<br><span style="font-size:0.6rem;">🔑 ${u.password}</span></span>`; const delBtn = document.createElement("button"); delBtn.textContent="Elimina"; delBtn.className="delete-user-btn"; delBtn.onclick = () => deleteUser(u.id); card.appendChild(delBtn); c.appendChild(card); } }
+    function renderUsersList() { 
+        const c = document.getElementById("usersListContainer"); 
+        if(!c) return; 
+        c.innerHTML = ""; 
+        for(let u of dipendentiList){ 
+            const card = document.createElement("div"); card.className="user-card"; 
+            card.innerHTML = `
+                <div class="user-card-header">
+                    <span>👤 <strong>${u.nome}</strong> (${u.id})</span>
+                    <button class="delete-user-btn" data-id="${u.id}">Elimina</button>
+                </div>
+                <div class="user-passwords">
+                    <div>🔑 Modifica: <code>${u.password}</code></div>
+                    <div>📖 Sola lettura: <code>${u.readonlyPassword || 'non impostata'}</code>
+                        <div class="ro-pwd-edit">
+                            <input type="text" id="ro-input-${u.id}" placeholder="Nuova password RO" value="${u.readonlyPassword || ''}">
+                            <button class="update-ro-btn" data-id="${u.id}">Aggiorna RO</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            c.appendChild(card);
+            card.querySelector(`.update-ro-btn`).addEventListener("click", () => {
+                const newVal = document.getElementById(`ro-input-${u.id}`).value;
+                updateReadonlyPassword(u.id, newVal);
+            });
+            card.querySelector(`.delete-user-btn`).addEventListener("click", () => deleteUser(u.id));
+        } 
+    }
+
     function refreshFilterButtons() { const container = document.getElementById("adminFilterContainer"); if(!container) return; container.innerHTML = `<button data-filter="all" class="dip-filter-btn ${adminFilter === 'all' ? 'active' : ''}">📋 Tutti</button>`; for(let u of dipendentiList){ const btn = document.createElement("button"); btn.textContent = u.nome; btn.className = `dip-filter-btn ${adminFilter === u.id ? 'active' : ''}`; btn.onclick = () => { adminFilter = u.id; refreshFilterButtons(); renderAdminDashboard(); }; container.appendChild(btn); } const allBtn = container.querySelector('[data-filter="all"]'); if(allBtn) allBtn.onclick = () => { adminFilter = "all"; refreshFilterButtons(); renderAdminDashboard(); }; }
 
     async function login(username, pwd) {
-        if(username === "admin" && pwd === "admin123"){ isAdmin=true; loggedUser="admin";
+        if(username === "admin" && pwd === "admin123"){ isAdmin=true; loggedUser="admin"; readOnlyMode=false;
             document.getElementById("loginSection").style.display="none"; document.getElementById("mainSection").style.display="block";
             document.getElementById("adminTabs").style.display="flex"; document.getElementById("userCalendarView").style.display="block";
             document.getElementById("adminDashboardView").style.display="none"; document.getElementById("dayByDayView").style.display="none";
             document.getElementById("usersManagementView").style.display="none"; document.getElementById("loggedUserSpan").innerHTML="👑 Admin";
             document.getElementById("mainTitle").innerHTML="👑 Pannello Admin"; renderUserCalendar(); refreshFilterButtons(); showToast("Admin connesso"); return true;
         }
-        const user = dipendentiList.find(u => u.id === username && u.password === pwd);
-        if(user){ isAdmin=false; loggedUser=user.id;
+        const user = dipendentiList.find(u => u.id === username);
+        if(user && user.password === pwd) { 
+            isAdmin=false; loggedUser=user.id; readOnlyMode=false;
             document.getElementById("loginSection").style.display="none"; document.getElementById("mainSection").style.display="block";
             document.getElementById("adminTabs").style.display="none"; document.getElementById("userCalendarView").style.display="block";
-            document.getElementById("loggedUserSpan").innerHTML=`👤 ${user.nome}`; document.getElementById("mainTitle").innerHTML="📅 Il mio Calendario";
-            renderUserCalendar(); showToast(`Benvenuto ${user.nome}`); return true;
+            document.getElementById("loggedUserSpan").innerHTML=`👤 ${user.nome} (modifica)`;
+            document.getElementById("mainTitle").innerHTML="📅 Il mio Calendario";
+            renderUserCalendar(); showToast(`Benvenuto ${user.nome} (modifica)`); return true;
+        }
+        if(user && user.readonlyPassword === pwd) {
+            isAdmin=false; loggedUser=user.id; readOnlyMode=true;
+            document.getElementById("loginSection").style.display="none"; document.getElementById("mainSection").style.display="block";
+            document.getElementById("adminTabs").style.display="none"; document.getElementById("userCalendarView").style.display="block";
+            document.getElementById("loggedUserSpan").innerHTML=`👤 ${user.nome} <span class="readonly-badge">📖 sola lettura</span>`;
+            document.getElementById("mainTitle").innerHTML="📅 Calendario (Sola Lettura)";
+            renderUserCalendar(); showToast(`Benvenuto ${user.nome} (sola lettura)`); return true;
         }
         showToast("Credenziali errate"); return false;
     }
-    function logout(){ loggedUser=null; isAdmin=false; document.getElementById("loginSection").style.display="block"; document.getElementById("mainSection").style.display="none"; showToast("Logout"); }
+    function logout(){ loggedUser=null; isAdmin=false; readOnlyMode=false; document.getElementById("loginSection").style.display="block"; document.getElementById("mainSection").style.display="none"; showToast("Logout"); }
     function showToast(msg){ const t = document.getElementById("toastMsg"); t.style.opacity="1"; t.innerText=msg; if(window.tt) clearTimeout(window.tt); window.tt = setTimeout(()=>t.style.opacity="0", 2000); }
 
     function bindEvents(){
@@ -726,7 +828,7 @@
         document.getElementById("tabDayByDayView").onclick = () => { showAdminSection("dayByDayView"); setActiveTab("tabDayByDayView"); renderDayByDayList(); };
         document.getElementById("tabUsersManagement").onclick = () => { showAdminSection("usersManagementView"); setActiveTab("tabUsersManagement"); renderUsersList(); };
         document.getElementById("adminResetAllBtn").onclick = resetAllTurni;
-        document.getElementById("addUserBtn").onclick = () => addUser(document.getElementById("newUserName").value, document.getElementById("newUserId").value, document.getElementById("newUserPassword").value);
+        document.getElementById("addUserBtn").onclick = () => addUser(document.getElementById("newUserName").value, document.getElementById("newUserId").value, document.getElementById("newUserPassword").value, document.getElementById("newUserReadonlyPwd").value);
         document.getElementById("resetDayByDayFilter")?.addEventListener("click", () => renderDayByDayList());
         function showAdminSection(sectionId){ document.getElementById("userCalendarView").style.display="none"; document.getElementById("adminDashboardView").style.display="none"; document.getElementById("dayByDayView").style.display="none"; document.getElementById("usersManagementView").style.display="none"; document.getElementById(sectionId).style.display="block"; }
         function setActiveTab(activeId){ ["tabAdminDashboard","tabDayByDayView","tabUsersManagement"].forEach(id=>{ const btn = document.getElementById(id); if(btn) btn.classList.remove("active"); }); document.getElementById(activeId)?.classList.add("active"); }
